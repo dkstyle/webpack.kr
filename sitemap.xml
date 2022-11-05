@@ -70,6 +70,9 @@
         <loc>https://webpack.kr/writers-guide</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/api/cli</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/api/compilation-hooks</loc>
     </url>
     <url>
@@ -83,9 +86,6 @@
     </url>
     <url>
         <loc>https://webpack.kr/api/hot-module-replacement</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/api/cli</loc>
     </url>
     <url>
         <loc>https://webpack.kr/api/loaders</loc>
@@ -115,13 +115,13 @@
         <loc>https://webpack.kr/api/plugins</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/api/resolvers</loc>
-    </url>
-    <url>
         <loc>https://webpack.kr/api/stats</loc>
     </url>
     <url>
         <loc>https://webpack.kr/api/webpack-dev-server</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/api/resolvers</loc>
     </url>
     <url>
         <loc>https://webpack.kr/blog/2020-10-10-webpack-5-release</loc>
@@ -133,6 +133,9 @@
         <loc>https://webpack.kr/blog/printable</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/concepts/configuration</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/concepts/dependency-graph</loc>
     </url>
     <url>
@@ -140,9 +143,6 @@
     </url>
     <url>
         <loc>https://webpack.kr/concepts/hot-module-replacement</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/concepts/configuration</loc>
     </url>
     <url>
         <loc>https://webpack.kr/concepts/loaders</loc>
@@ -415,13 +415,13 @@
         <loc>https://webpack.kr/loaders/mocha-loader</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/loaders/node-loader</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/loaders/null-loader</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders/postcss-loader</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/loaders/node-loader</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders/raw-loader</loc>

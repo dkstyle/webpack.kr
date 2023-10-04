@@ -37,13 +37,13 @@
         <loc>https://webpack.kr/get-started</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/glossary</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/guides</loc>
     </url>
     <url>
         <loc>https://webpack.kr/license</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/glossary</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders</loc>
@@ -214,6 +214,12 @@
         <loc>https://webpack.kr/configuration/optimization</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/configuration/other-options</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/configuration/output</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/configuration/performance</loc>
     </url>
     <url>
@@ -263,12 +269,6 @@
     </url>
     <url>
         <loc>https://webpack.kr/development/release-process</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/configuration/other-options</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/configuration/output</loc>
     </url>
     <url>
         <loc>https://webpack.kr/get-started/install-webpack</loc>

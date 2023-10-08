@@ -226,63 +226,6 @@
         <loc>https://webpack.kr/configuration/plugins</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/configuration/resolve</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/configuration/stats</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/configuration/target</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/configuration/watch</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/debugging</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/plugin-patterns</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/release-process</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/writers-guide</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/writing-a-loader</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/writing-a-plugin</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/contribute/writing-a-scaffold</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/development/how-to-write-a-loader</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/development/how-to-write-a-plugin</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/development/plugin-patterns</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/development/release-process</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/get-started/install-webpack</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/get-started/why-webpack</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/guides/asset-management</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/guides/asset-modules</loc>
-    </url>
-    <url>
         <loc>https://webpack.kr/guides/author-libraries</loc>
     </url>
     <url>
@@ -467,6 +410,63 @@
     </url>
     <url>
         <loc>https://webpack.kr/plugins/automatic-prefetch-plugin</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/configuration/resolve</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/configuration/stats</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/configuration/target</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/configuration/watch</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/debugging</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/plugin-patterns</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/release-process</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/writers-guide</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/writing-a-loader</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/writing-a-plugin</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/contribute/writing-a-scaffold</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/development/how-to-write-a-loader</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/development/how-to-write-a-plugin</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/development/plugin-patterns</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/development/release-process</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/get-started/install-webpack</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/get-started/why-webpack</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/guides/asset-management</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/guides/asset-modules</loc>
     </url>
     <url>
         <loc>https://webpack.kr/plugins/banner-plugin</loc>

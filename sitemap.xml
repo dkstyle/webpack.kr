@@ -352,10 +352,10 @@
         <loc>https://webpack.kr/guides/package-exports</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/production-build</loc>
+        <loc>https://webpack.kr/guides/production</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/production</loc>
+        <loc>https://webpack.kr/guides/production-build</loc>
     </url>
     <url>
         <loc>https://webpack.kr/guides/progressive-web-application</loc>
@@ -367,10 +367,10 @@
         <loc>https://webpack.kr/guides/scaffolding</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/tree-shaking</loc>
+        <loc>https://webpack.kr/guides/shimming</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/shimming</loc>
+        <loc>https://webpack.kr/guides/tree-shaking</loc>
     </url>
     <url>
         <loc>https://webpack.kr/guides/typescript</loc>
@@ -382,10 +382,10 @@
         <loc>https://webpack.kr/guides/why-webpack</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/coffee-loader</loc>
+        <loc>https://webpack.kr/loaders/babel-loader</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/babel-loader</loc>
+        <loc>https://webpack.kr/loaders/coffee-loader</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders/css-loader</loc>
@@ -400,10 +400,10 @@
         <loc>https://webpack.kr/loaders/file-loader</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/imports-loader</loc>
+        <loc>https://webpack.kr/loaders/html-loader</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/html-loader</loc>
+        <loc>https://webpack.kr/loaders/imports-loader</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders/istanbul-instrumenter-loader</loc>

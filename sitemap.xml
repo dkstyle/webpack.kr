@@ -430,10 +430,10 @@
         <loc>https://webpack.kr/loaders/remark-loader</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/source-map-loader</loc>
+        <loc>https://webpack.kr/loaders/sass-loader</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/loaders/sass-loader</loc>
+        <loc>https://webpack.kr/loaders/source-map-loader</loc>
     </url>
     <url>
         <loc>https://webpack.kr/loaders/style-loader</loc>
@@ -490,10 +490,10 @@
         <loc>https://webpack.kr/plugins/css-minimizer-webpack-plugin</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/plugins/dll-plugin</loc>
+        <loc>https://webpack.kr/plugins/define-plugin</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/plugins/define-plugin</loc>
+        <loc>https://webpack.kr/plugins/dll-plugin</loc>
     </url>
     <url>
         <loc>https://webpack.kr/plugins/environment-plugin</loc>
@@ -571,10 +571,10 @@
         <loc>https://webpack.kr/plugins/split-chunks-plugin</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/plugins/stylelint-webpack-plugin</loc>
+        <loc>https://webpack.kr/plugins/svg-chunk-webpack-plugin</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/plugins/svg-chunk-webpack-plugin</loc>
+        <loc>https://webpack.kr/plugins/stylelint-webpack-plugin</loc>
     </url>
     <url>
         <loc>https://webpack.kr/plugins/terser-webpack-plugin</loc>

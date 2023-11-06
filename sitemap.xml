@@ -373,10 +373,10 @@
         <loc>https://webpack.kr/guides/tree-shaking</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/web-workers</loc>
+        <loc>https://webpack.kr/guides/typescript</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/guides/typescript</loc>
+        <loc>https://webpack.kr/guides/web-workers</loc>
     </url>
     <url>
         <loc>https://webpack.kr/guides/why-webpack</loc>

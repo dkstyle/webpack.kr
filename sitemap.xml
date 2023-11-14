@@ -7,6 +7,12 @@
         <loc>https://webpack.kr/</loc>
     </url>
     <url>
+        <loc>https://webpack.kr/support</loc>
+    </url>
+    <url>
+        <loc>https://webpack.kr/writers-guide</loc>
+    </url>
+    <url>
         <loc>https://webpack.kr/api</loc>
     </url>
     <url>
@@ -61,10 +67,7 @@
         <loc>https://webpack.kr/pluginsapi</loc>
     </url>
     <url>
-        <loc>https://webpack.kr/support</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/writers-guide</loc>
+        <loc>https://webpack.kr/pluginsapi/template</loc>
     </url>
     <url>
         <loc>https://webpack.kr/api/cli</loc>
@@ -584,9 +587,6 @@
     </url>
     <url>
         <loc>https://webpack.kr/pluginsapi/compiler</loc>
-    </url>
-    <url>
-        <loc>https://webpack.kr/pluginsapi/template</loc>
     </url>
     <url>
         <loc>https://webpack.kr/api/plugins/compilation</loc>

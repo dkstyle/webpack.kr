@@ -25,7 +25,7 @@ translators:
 
 `stats` 옵션을 사용하면 표시되는 번들 정보를 정확하게 제어할 수 있습니다. 번들 정보를 얻고 싶지만 전부에 대한 정보를 얻고자 하는 것은 아닐 것이기 때문에 `quiet` 또는 `noInfo`를 사용하지 않는 경우 좋은 절충안이 될 수 있습니다.
 
-W> 이 옵션은 Node.js API를 사용할 경우에는 아무 효과가 없습니다. stats 옵션을 `stats.toString()`에 전달해야 합니다. 대신 `stats.toJson()`이 호출됩니다.
+W> 이 옵션은 [Node.js API](/api/node)를 사용할 경우에는 아무 효과가 없습니다. stats 옵션을 `stats.toString()`에 전달해야 합니다. 대신 `stats.toJson()`이 호출됩니다.
 
 ```js
 module.exports = {
@@ -1236,12 +1236,12 @@ W> `stats.warningsFilter`는 지원이 중단되어 대신 [`ignoreWarnings`](/c
 
 `assetsSort`, `chunksSort` 및 `modulesSort`의 경우 항목을 정렬할 수 있는 몇 가지 필드가 있습니다.
 
-- `'id'`는 항목의 id
+- `'id'` - 항목의 id
 - `'name'` - 가져올 때 설정된 항목의 이름
 - `'size'` - 바이트 단위의 항목 크기
 - `'chunks'` - 항목이 생성된 청크(예를 들어, 하나의 청크에 여러 개의 하위 청크가 있는 경우 하위 청크는 기본 청크에 따라 함께 그룹화 됨)
-- `'errors'` - 항목의 에러 발생량
-- `'warnings'` - 항목의 경고 발생량
+- `'errors'` - 항목의 에러 수
+- `'warnings'` - 항목의 경고 수
 - `'failed'` - 항목 컴파일 실패 여부
 - `'cacheable'` - 항목 캐시 가능 여부
 - `'built'` - 애셋 빌드 여부
@@ -1258,7 +1258,7 @@ W> `stats.warningsFilter`는 지원이 중단되어 대신 [`ignoreWarnings`](/c
 
 ### Extending stats behaviours
 
-`'minimal'`같은 미리 정의된 동작 중 하나를 사용하지만 하나 이상의 규칙을 재정의하는 경우, 원하는 `stats.preset`을 지정하고 사용자 지정 또는 추가 규칙을 추가하면 됩니다.
+`'minimal'`같은 사전 설정 중 하나를 사용하지만 일부 규칙을 재정의하는 경우, 원하는 `stats.preset`을 지정하고 사용자 지정 또는 추가 규칙을 추가하면 됩니다.
 
 **webpack.config.js**
 

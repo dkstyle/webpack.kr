@@ -22,6 +22,7 @@ contributors:
   - chenxsan
   - snitin315
   - vabushkevich
+  - ahabhgk
 translators:
   - YukJiSoo
 ---
@@ -150,9 +151,28 @@ module.exports = {
         // 스타일시트를 생성하고 로드하는 것을 피하고 출력 자바스크립트 파일에 css의 내보내기만 포함합니다.
         // type: boolean, webpack 5.90.0부터 사용 가능합니다.
         exportsOnly: true,
+
+        // CSS 내보내기 이름을 그대로 유지하거나 카멜 케이스로 변환하는 등 javascript 모듈로 내보내는 방법을 사용자 정의합니다.
+        // type: 'as-is' | 'camel-case' | 'camel-case-only' | 'dashes' | 'dashes-only' | ((name: string) => string)
+        // webpack 5.90.4부터 사용 가능합니다.
+        exportsConvention: 'camel-case-only',
       },
       'css/auto': {
-        // ditto
+        // CSS/자동 모듈 생성용 옵션
+
+        // 스타일시트를 생성하고 로드하는 것을 피하고 출력 자바스크립트 파일에 css의 내보내기만 포함합니다.
+        // type: boolean, webpack 5.90.0부터 사용 가능합니다.
+        exportsOnly: true,
+
+        // CSS 내보내기 이름을 그대로 유지하거나 카멜 케이스로 변환하는 등 javascript 모듈로 내보내는 방법을 사용자 정의합니다.
+        // type: 'as-is' | 'camel-case' | 'camel-case-only' | 'dashes' | 'dashes-only' | ((name: string) => string)
+        // webpack 5.90.4부터 사용 가능합니다.
+        exportsConvention: 'camel-case-only',
+
+        // CSS 모듈에 대해 생성된 로컬 클래스 이름의 형식을 사용자 정의합니다.
+        // type: string, https://webpack.js.org/configuration/output/#template-strings의 파일 수준 및 모듈 수준 대체 외에도 [uniqueName] 및 [local]도 포함됩니다.
+        // webpack 5.90.4부터 사용 가능합니다.
+        localIdentName: '[uniqueName]-[id]-[local]',
       },
       'css/global': {
         // ditto

@@ -128,6 +128,28 @@ Webpack 4 및 해당 플러그인/로더 업그레이드 단계에서 일부 플
   }
   ```
 
+- output.library 또는 output.libraryTarget이 정의된 경우 속성 이름을 변경합니다 (output.libraryTarget -> output.library.type, output.library -> output.library.name). 예를 들면 다음과 같습니다.
+
+  ```json
+  // for webpack 4
+  {
+      output: {
+        library: 'MyLibrary',
+        libraryTarget: 'commonjs2'
+      }
+  }
+
+  // for webpack 5
+  {
+      output: {
+        library: {
+          name: 'MyLibrary',
+          type: 'commonjs2'
+        }
+      }
+  }
+  ```
+
 import를 통해 WebAssembly를 사용하는 경우 다음 두 단계 프로세스를 따라야 합니다.
 
 - webpack 4에서와 동일한 동작을 얻으려면 `experiments.syncWebAssembly: true`를 설정하여 이제는 사용되지 않는 사양을 활성화합니다.

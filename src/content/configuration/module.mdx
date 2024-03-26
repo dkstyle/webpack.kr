@@ -535,13 +535,18 @@ const x = require(/* webpackIgnore: true */ 'x');
 
 webpack이 주어진 정규식과 일치하는 파일을 파싱하지 못하도록 합니다. 제외된 파일에는 `import`, `require`, `define` 또는 기타 import 메커니즘의 호출이 **없어야 합니다**. 이렇게 하면 큰 라이브러리를 무시할 때 빌드 성능을 향상 시킬 수 있습니다.
 
+'noParse'는 모든 'import', 'require', 'define' 등의 호출이 런타임에서 도달할 수 없는 경우 확장을 의도적으로 방지하는 방법으로도 사용할 수 있습니다.
+예를 들어 '브라우저' [대상](/configuration/target/)용 프로젝트를 빌드하고 브라우저와 Node.js 모두에 대해 사전 빌드된 타사 라이브러리를 사용할 때, 예를 들면 `require('os')`와 같은 Node.js의 내장 기능이 필요합니다.
+
+T> Windows에서는 `\`, Mac/Linux에서는 `/`와 일치시키려면 정규식에서 `[\\/]`를 사용해야 할 수도 있습니다.
+
 **webpack.config.js**
 
 ```javascript
 module.exports = {
   //...
   module: {
-    noParse: /jquery|lodash/,
+    noParse: /jquery|lodash|src[\\/]vendor[\\/]somelib/,
   },
 };
 ```
@@ -550,7 +555,8 @@ module.exports = {
 module.exports = {
   //...
   module: {
-    noParse: (content) => /jquery|lodash/.test(content),
+    noParse: (content) =>
+      /jquery|lodash|src[\\/]vendor[\\/]somelib/.test(content),
   },
 };
 ```
@@ -1416,7 +1422,7 @@ module.exports = {
 
 호환성을 위해 `options` 프로퍼티의 별칭인 `query` 속성도 가능합니다. `options` 프로퍼티를 사용하는 것을 권장합니다.
 
-webpack은 옵션을 포함한 모든 로더와 리소스에서 고유한 모듈 식별자를 생성해야합니다. 옵션 객체의 `JSON.stringify`로 이를 시도합니다. 99.9%의 경우에 문제가 없지만 리소스에 다른 옵션이 있는 동일한 로더를 적용하고 옵션에 일부 문자열 값이 있는 경우 고유하지 않을 수 있습니다.
+webpack은 옵션을 포함한 모든 로더와 리소스에서 고유한 모듈 식별자를 생성해야합니다. 옵션 객체의 `JSON.stringify`로 이를 시도합니다. 99.9%의 경우에 문제가 없지만 리소스에 다른 옵션이 있는 동일한 로더를 적용하고 옵션에 동일한 문자열 값이 있는 경우 고유하지 않을 수 있습니다.
 
 순환 JSON 같은 옵션 객체를 문자열화 할 수 없는 경우에도 중단됩니다. 이를 해결하기 위해 고유 식별자로 사용되는 옵션 객체에서 `ident` 속성을 가질 수 있습니다.
 

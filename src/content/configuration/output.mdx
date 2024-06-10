@@ -498,6 +498,9 @@ module.exports = {
       globalThis: true,
       // ECMAScript 모듈을 가져오는 ECMAScript Module syntax를 지원합니다(import ... from '...' 처럼 사용합니다).
       module: false,
+      // 이를 지원하는 환경에서 코어 모듈 가져오기에 대해 node: prefix가 생성될지 여부를 결정합니다.
+      // 이는 Webpack 런타임 코드에만 적용됩니다.
+      nodePrefixForCoreModules: false,
       // 옵셔널 체이닝('obj?.a' 또는 'obj?.()')을 지원합니다.
       optionalChaining: true,
       // 템플릿 리터럴을 지원합니다.

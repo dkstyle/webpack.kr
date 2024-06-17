@@ -2095,6 +2095,8 @@ module.exports = {
 
 이 파라미터의 `[fullhash]`는 컴파일의 해시로 대체됩니다. 자세한 내용은 [캐싱 가이드](/guides/caching/)를 참고하세요.
 
+W> The path must not contain an exclamation mark (`!`) as it is reserved by webpack for [loader syntax](/concepts/loaders/#inline).
+
 ## output.pathinfo
 
 `boolean=true` `string: 'verbose'`

@@ -748,7 +748,7 @@ const unsafeCacheHandler = {
 
     // 파일이 디스크에 있는지 확인하세요
     if (cachedValue && !fs.existsSync(cachedValue.path)) {
-      // and if it doesn't, evict that cache entry.
+      // 그렇지 않은 경우 해당 캐시 항목을 제거합니다.
       delete cache[key];
       return undefined;
     }

@@ -311,10 +311,10 @@ import * as styles from './styles.module.css';
 import styles1 from './styles.module.css';
 import { foo } from './styles.module.css';
 
-console.log(styles.default.foo); // Access via styles.default
-console.log(styles.foo); // Access directly from styles
-console.log(styles1.foo); // Access via default import styles1
-console.log(foo); // Direct named import
+console.log(styles.default.foo); // styles.default를 통해 접근
+console.log(styles.foo); // styles에서 직접 접근
+console.log(styles1.foo); // 기본 가져오기를 통해 styles1에 접근
+console.log(foo); // 바로 명명된 이름으로 가져오기
 ```
 
 `namedExports`가 활성화되면(기본 동작) **이름이 지정된 내보내기만** 사용하여 CSS 클래스를 가져올 수 있습니다.

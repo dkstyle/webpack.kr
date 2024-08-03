@@ -75,6 +75,9 @@ module.exports = {
       asset: {
         // asset 모듈 제너레이터 옵션
 
+        // 이 애셋을 바이너리로 처리해야 하는지 여부를 나타냅니다. 대신 텍스트로 처리하려면 'false'로 설정합니다. webpack 5.93.0부터 사용 가능합니다.
+        binary: false,
+
         // 데이터 URL 제너레이터 옵션입니다.
         dataUrl: {
           // 애셋 인코딩(기본값은 "base64")
@@ -104,6 +107,9 @@ module.exports = {
       'asset/inline': {
         // asset/inline 모듈 제너레이터 옵션
 
+        // 이 애셋을 바이너리로 처리해야 하는지 여부를 나타냅니다. 대신 텍스트로 처리하려면 'false'로 설정합니다. webpack 5.93.0부터 사용 가능합니다.
+        binary: false,
+
         // 데이터 URL 제너레이터 옵션
         dataUrl: {
           // 애셋 인코딩(기본값은 "base64")
@@ -116,6 +122,9 @@ module.exports = {
       },
       'asset/resource': {
         // asset/resource 모듈 제너레이터 옵션
+
+        // 이 애셋을 바이너리로 처리해야 하는지 여부를 나타냅니다. 대신 텍스트로 처리하려면 'false'로 설정합니다. webpack 5.93.0부터 사용 가능합니다.
+        binary: false,
 
         // 이 애셋 모듈에서 출력 애셋을 내보냅니다. 예를 들어 SSR의 경우 내보내기를 생략하려면 'false'로 설정할 수 있습니다.
         // type: boolean

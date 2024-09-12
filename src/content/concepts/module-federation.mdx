@@ -192,7 +192,9 @@ module.exports = {
         const proxy = {
           get: (request) => window.app1.get(request),
           init: (...arg) => {
+          init: (...arg) => {
             try {
+              return window.app1.init(...arg)
               return window.app1.init(...arg)
             } catch(e) {
               console.log('remote container already initialized')

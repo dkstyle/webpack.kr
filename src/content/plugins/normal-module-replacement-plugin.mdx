@@ -6,6 +6,7 @@ contributors:
   - byzyk
   - chenxsan
   - askoufis
+  - snitin315
 translators:
   - dajeongPark-dev
 ---
@@ -55,6 +56,10 @@ module.exports = function (env) {
           /-APP_TARGET/,
           `-${appTarget}`
         );
+
+        if (resource.createData) {
+          resource.createData.request = resource.request;
+        }
       }),
     ],
   };

@@ -69,6 +69,20 @@ related:
 
 여기서 `package/things/apple`은 `.../package/good-things/apple` 또는 `.../package/bad-things/apple`에서 찾을 수 있습니다.
 
+W> 버전 5.94.0부터 webpack의 동작이 Node의 동작과 일치하도록 업데이트되었습니다. 이제 추가 해결을 시도하지 않고 첫 번째 유효한 경로를 선택하고 경로를 해결할 수 없는 경우 오류를 발생시킵니다.
+
+예를 들어, 다음과 같은 설정이 있습니다.
+
+```json
+{
+  "exports": {
+    ".": ["-bad-specifier-", "./non-existent.js", "./existent.js"]
+  }
+}
+```
+
+Webpack 5.94.0+에서는 이전 동작이 `existent.js`로 확인되었을 것이지만 `non-existent.js`가 발견되지 않아 오류가 발생합니다.
+
 ## Conditional syntax
 
 `exports` 필드에 직접 결과를 제공하는 대신
@@ -147,24 +161,24 @@ throw new ModuleNotFoundError();
 
 ## Support
 
-| 기능                                  | 지원                                                                               |
-| ------------------------------------- | ---------------------------------------------------------------------------------- |
-| `"."` 속성                            | Node.js, webpack, rollup, esinstall, wmr                                           |
-| 일반 속성                             | Node.js, webpack, rollup, esinstall, wmr                                           |
-| `/`로 끝나는 속성                     | Node.js<sup>(1)</sup>, webpack, rollup, esinstall<sup>(2)</sup>, wmr<sup>(3)</sup> |
-| `*`로 끝나는 속성                     | Node.js, webpack, rollup, esinstall                                                |
-| alternatives                          | Node.js, webpack, rollup, <strike>esinstall</strike><sup>(4)</sup>                 |
-| path에만 축약형 사용                  | Node.js, webpack, rollup, esinstall, wmr                                           |
-| 조건에만 축약형 사용                  | Node.js, webpack, rollup, esinstall, wmr                                           |
-| 조건 구문                             | Node.js, webpack, rollup, esinstall, wmr                                           |
-| 중첩된 조건 구문                      | Node.js, webpack, rollup, wmr<sup>(5)</sup>                                        |
-| 조건 순서                             | Node.js, webpack, rollup, wmr<sup>(6)</sup>                                        |
-| `"default"` 조건                      | Node.js, webpack, rollup, esinstall, wmr                                           |
-| 경로 순서                             | Node.js, webpack, rollup                                                           |
-| 매핑되지 않았을 때 오류               | Node.js, webpack, rollup, esinstall, wmr<sup>(7)</sup>                             |
-| 조건과 경로를 혼합해서 사용할 때 오류 | Node.js, webpack, rollup                                                           |
+| 기능                                  | 지원                                                                                   |
+| ------------------------------------- | -------------------------------------------------------------------------------------- |
+| `"."` 속성                            | Node.js, webpack, rollup, esinstall, wmr                                               |
+| 일반 속성                             | Node.js, webpack, rollup, esinstall, wmr                                               |
+| `/`로 끝나는 속성                     | ~~Node.js<sup>(1)</sup>~~, webpack, rollup, esinstall<sup>(2)</sup>, wmr<sup>(3)</sup> |
+| `*`로 끝나는 속성                     | Node.js, webpack, rollup, esinstall                                                    |
+| alternatives                          | Node.js, webpack, rollup, <strike>esinstall</strike><sup>(4)</sup>                     |
+| path에만 축약형 사용                  | Node.js, webpack, rollup, esinstall, wmr                                               |
+| 조건에만 축약형 사용                  | Node.js, webpack, rollup, esinstall, wmr                                               |
+| 조건 구문                             | Node.js, webpack, rollup, esinstall, wmr                                               |
+| 중첩된 조건 구문                      | Node.js, webpack, rollup, wmr<sup>(5)</sup>                                            |
+| 조건 순서                             | Node.js, webpack, rollup, wmr<sup>(6)</sup>                                            |
+| `"default"` 조건                      | Node.js, webpack, rollup, esinstall, wmr                                               |
+| 경로 순서                             | Node.js, webpack, rollup                                                               |
+| 매핑되지 않았을 때 오류               | Node.js, webpack, rollup, esinstall, wmr<sup>(7)</sup>                                 |
+| 조건과 경로를 혼합해서 사용할 때 오류 | Node.js, webpack, rollup                                                               |
 
-(1) Node.js 에서 더 이상 사용되지 않으며 `*`를 사용해야 합니다.
+(1) Node.js 17에서 제거되었습니다. 대신 `*`를 사용하세요.
 
 (2) `"./"` 키는 의도적으로 무시됩니다.
 

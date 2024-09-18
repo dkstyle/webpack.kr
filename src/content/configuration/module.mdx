@@ -753,6 +753,33 @@ import one from './pkg-1.json' assert { type: 'json' };
 
 이 예에서는 `Rule.assert`를 사용하여 `assert { type: "json" }`이라는 어설션과 함께 가져온 모든 모듈에 `loader-assert.js`를 적용하여 JSON 파일이 올바르게 처리되는지 확인합니다.
 
+## Rule.compiler
+
+하위 컴파일러 이름을 일치시킬 수 있는 [`조건`](#condition).
+
+**webpack.config.js**
+
+```javascript
+module.exports = {
+  // ...
+  name: 'compiler',
+  module: {
+    rules: [
+      {
+        test: /a\.js$/,
+        compiler: 'compiler', //"컴파일러" 이름과 일치하면 로더가 적용됩니다.
+        use: './loader',
+      },
+      {
+        test: /b\.js$/,
+        compiler: 'other-compiler', // "컴파일러" 이름과 일치하지 않으므로 로더가 적용되지 않습니다.
+        use: './loader',
+      },
+    ],
+  },
+};
+```
+
 ## Rule.enforce
 
 `string`

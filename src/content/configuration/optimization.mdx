@@ -126,6 +126,31 @@ module.exports = {
 
 W> webpack [CLI](/api/cli/)를 사용한다면, 이 플러그인이 활성화되어있는 동안 webpack 프로세스가 오류 코드와 함께 종료되지 않습니다. CLI를 사용할 때 webpack이 "실패"하게 하려면 [`bail` 옵션](/api/cli/#advanced-options)을 확인하세요.
 
+## optimization.avoidEntryIife
+
+`boolean = false`
+
+<Badge text="5.95.0+" />
+
+`optimization.avoidEntryIife`를 사용하면 엔트리 모듈이 필요할 때 IIFE로 감싸지는 것을 피할 수 있습니다([JavascriptModulesPlugin](https://github.com/webpack/webpack/blob/main/lib/javascript/JavascriptModulesPlugin.js)에서 `"This entry needs to be wrap in an IIFE because"`를 검색하세요). 이 접근 방식은 JavaScript 엔진의 성능을 최적화하는 데 도움이 되며 ESM 라이브러리를 빌드할 때 트리 쉐이킹을 가능하게 합니다.
+
+현재 `optimization.avoidEntryIife`는 다른 모듈과 함께 단일 항목 모듈만 최적화할 수 있습니다.
+
+기본적으로 `optimization.avoidEntryIife`는 `production` [모드](/configuration/mode/)에서 활성화되고 그렇지 않으면 비활성화됩니다.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  //...
+  optimization: {
+    avoidEntryIife: true,
+  },
+};
+```
+
+W> `⁠optimization.avoidEntryIife` 옵션은 빌드 성능에 부정적인 영향을 미칠 수 있습니다. 이러한 최적화보다 빌드 성능을 우선시하는 경우 이 옵션을 비활성화하는 것을 고려하세요.
+
 ## optimization.flagIncludedChunks
 
 `boolean`
@@ -427,7 +452,7 @@ module.exports = {
 
 `boolean`
 
-애셋이 처리된 후 올바른 애셋 콘텐츠 해시를 얻기 위해 추가 해시 컴파일 패스를 추가합니다. `realContentHash`를 `false`로 설정하면 내부 데이터를 사용하여 해시를 산출하며 이는 애셋이 동일한 경우 변경될 수 있습니다. 기본적으로 `optimization.realContentHash`는 프로덕션 모드에서만 활성화되고 그렇지 않으면 비활성화됩니다.
+애셋이 처리된 후 올바른 애셋 콘텐츠 해시를 얻기 위해 추가 해시 컴파일 패스를 추가합니다. `realContentHash`를 `false`로 설정하면 내부 데이터를 사용하여 해시를 산출하며 이는 애셋이 동일한 경우 변경될 수 있습니다. 기본적으로 `optimization.realContentHash`는 프로덕션 [모드](/configuration/mode/)에서 활성화되고 그렇지 않으면 비활성화됩니다.
 
 **webpack.config.js**
 

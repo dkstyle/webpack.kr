@@ -12,9 +12,11 @@ contributors:
   - KyleBastien
   - Alevale
   - burhanuday
+  - RexSkz
 translators:
   - choilim
   - dkstyle
+  - RexSkz
 related:
   - title: 'Webpack 5 Module Federation: A game-changer in JavaScript architecture'
     url: https://medium.com/swlh/webpack-5-module-federation-a-game-changer-to-javascript-architecture-bcdd30e02669
@@ -190,9 +192,9 @@ module.exports = {
         // 이제 Promise를 해석할 수 있습니다.
         const proxy = {
           get: (request) => window.app1.get(request),
-          init: (arg) => {
+          init: (...arg) => {
             try {
-              return window.app1.init(arg)
+              return window.app1.init(...arg)
             } catch(e) {
               console.log('remote container already initialized')
             }

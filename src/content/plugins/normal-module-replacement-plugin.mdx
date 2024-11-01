@@ -5,6 +5,8 @@ contributors:
   - gonzoyumo
   - byzyk
   - chenxsan
+  - askoufis
+  - snitin315
 translators:
   - dajeongPark-dev
 ---
@@ -47,15 +49,18 @@ module.exports = function (env) {
   var appTarget = env.APP_TARGET || 'VERSION_A';
   return {
     plugins: [
-      new webpack.NormalModuleReplacementPlugin(
-        /(.*)-APP_TARGET(\.*)/,
-        function (resource) {
-          resource.request = resource.request.replace(
-            /-APP_TARGET/,
-            `-${appTarget}`
-          );
+      new webpack.NormalModuleReplacementPlugin(/-APP_TARGET$/, function (
+        resource
+      ) {
+        resource.request = resource.request.replace(
+          /-APP_TARGET/,
+          `-${appTarget}`
+        );
+
+        if (resource.createData) {
+          resource.createData.request = resource.request;
         }
-      ),
+      }),
     ],
   };
 };

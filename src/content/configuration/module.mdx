@@ -724,6 +724,62 @@ Rule에는 두 가지 출력 값이 있습니다.
 2. [`rules`](#rulerules)
 3. [`oneOf`](#ruleoneof)
 
+## Rule.assert
+
+종속성의 가져오기 어설션을 일치시키고 어설션 유형에 따라 특정 규칙을 적용할 수 있는 [`조건`](#condition)입니다.
+
+**webpack.config.js**
+
+```javascript
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        // "assert { type: 'json' }" 어설션을 사용하여 가져오기를 처리합니다.
+        assert: { type: 'json' },
+        loader: require.resolve('./loader-assert.js'),
+      },
+    ],
+  },
+};
+```
+
+**index.js**
+
+```javascript
+import one from './pkg-1.json' assert { type: 'json' };
+```
+
+이 예에서는 `Rule.assert`를 사용하여 `assert { type: "json" }`이라는 어설션과 함께 가져온 모든 모듈에 `loader-assert.js`를 적용하여 JSON 파일이 올바르게 처리되는지 확인합니다.
+
+## Rule.compiler
+
+하위 컴파일러 이름을 일치시킬 수 있는 [`조건`](#condition).
+
+**webpack.config.js**
+
+```javascript
+module.exports = {
+  // ...
+  name: 'compiler',
+  module: {
+    rules: [
+      {
+        test: /a\.js$/,
+        compiler: 'compiler', //"컴파일러" 이름과 일치하면 로더가 적용됩니다.
+        use: './loader',
+      },
+      {
+        test: /b\.js$/,
+        compiler: 'other-compiler', // "컴파일러" 이름과 일치하지 않으므로 로더가 적용되지 않습니다.
+        use: './loader',
+      },
+    ],
+  },
+};
+```
+
 ## Rule.enforce
 
 `string`
@@ -1453,6 +1509,37 @@ module.exports = {
 ```
 
 W> `resolve.fullySpecified`는 [mainFields](/configuration/resolve/#resolvemainfields), [aliasFields](/configuration/resolve/#resolvealiasfields) 또는 [aliases](/configuration/resolve/#resolvealias)의 요청에 영향을 주지 않습니다.
+
+## Rule.with
+
+<Badge text="v5.92.0+" />
+
+`with` 키워드로 제공된 특정 조건에 따라 가져오기를 일치시킬 수 있는 [`조건`](#condition)을 통해 콘텐츠 유형에 따라 다른 규칙을 적용할 수 있습니다.
+
+**webpack.config.js**
+
+```javascript
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        // "with { type: 'json' }" 조건으로 가져오기를 처리합니다.
+        with: { type: 'json' },
+        loader: require.resolve('./loader-assert.js'),
+      },
+    ],
+  },
+};
+```
+
+**index.js**
+
+```javascript
+import one from './pkg-1.json' with { type: 'json' };
+```
+
+이 예에서 `Rule.with`는 `with { type: "json" }` 조건으로 가져온 모든 모듈에 `loader-assert.js`를 적용하는 데 사용됩니다.
 
 ## Condition
 

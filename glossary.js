@@ -62,6 +62,7 @@ process.argv.forEach((cmd, index) => {
       splitLines.forEach(checkLine);
     } catch (e) {
       log(LOG_KEY.ERROR, 'File not exist');
+      throw e;
     }
   });
 });

@@ -264,9 +264,14 @@ module.exports = {
       css: {
         // CSS 모듈의 파서 옵션
 
+        // Webpack 5.97.0부터 사용 가능한 `@import` at-rules 처리를 활성화/비활성화합니다.
+        // type: boolean
+        import: true,
         // Webpack 5.90.0부터 사용할 수 있는 CSS 내보내기를 위해 export라는 이름의 ES 모듈을 사용하세요.
         // type: boolean
         namedExports: true,
+        // webpack 5.97.0부터 사용 가능한 url()/image-set()/src()/image() 함수 처리를 활성화/비활성화합니다.
+        url: true,
       },
       'css/auto': {
         // 위와 동일
@@ -283,9 +288,65 @@ module.exports = {
 };
 ```
 
-### module.parser.css.namedExports
+### module.parser.css
 
-이 옵션을 사용하면 CSS 내보내기에 export라는 이름의 ES 모듈을 사용할 수 있습니다. true로 설정하면 CSS 모듈은 이름이 지정된 내보내기를 사용하여 클래스와 스타일을 내보냅니다.
+CSS 파서에 대한 옵션을 설정합니다.
+
+```js
+module.exports = {
+  module: {
+    parser: {
+      css: {
+        // ...
+        namedExports: true,
+      },
+    },
+  },
+};
+```
+
+#### module.parser.css.import
+
+이 옵션은 CSS 파일에서 `@import` at-rules를 처리할 수 있도록 합니다. `true`로 설정하면 `@import` 문이 처리되어 다른 CSS 파일에서 스타일을 모듈식으로 포함할 수 있습니다.
+
+- Type: `boolean`
+- Available: 5.97.0+
+- Example:
+
+  ```js
+  module.exports = {
+    module: {
+      parser: {
+        css: {
+          import: true,
+        },
+      },
+    },
+  };
+  ```
+
+  ```css
+  /* reset-styles.css */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  ```
+
+  ```css
+  /* styles.css */
+  @import './reset-styles.css';
+
+  body {
+    background-color: red;
+  }
+  ```
+
+T> 특정 가져오기를 필터링하려면 Webpack의 기본 제공 [IgnorePlugin](/plugins/ignore-plugin/)을 사용할 수 있습니다. `css-loader`에서 사용 가능한 [`filter` 옵션](/loaders/css-loader/#filter)은 지원되지 않습니다.
+
+#### module.parser.css.namedExports
+
+이 옵션을 사용하면 CSS 내보내기에 export라는 이름의 ES 모듈을 사용할 수 있습니다. `true`로 설정하면 CSS 모듈은 이름이 지정된 내보내기를 사용하여 클래스와 스타일을 내보냅니다.
 
 - Type: `boolean`
 - Available: 5.90.0+
@@ -335,6 +396,39 @@ import { header, footer } from './styles.module.css';
 ```
 
 `namedExports`를 활성화하면 JavaScript 프로젝트에서 CSS를 관리하는 데 더 모듈화되고 유지 관리 가능한 접근 방식을 채택하고 ES 모듈 구문을 활용하여 더 명확하고 명시적인 가져오기를 수행할 수 있습니다.
+
+#### module.parser.css.url
+
+This option enables or disables the handling of URLs in functions such as `url()`, `image-set()`, `src()`, and `image()` within CSS files. When enabled, these URLs are resolved and processed by webpack.
+
+- Type: `boolean`
+- Available: 5.97.0+
+- Example:
+
+  ```js
+  module.exports = {
+    module: {
+      parser: {
+        css: {
+          url: true,
+        },
+      },
+    },
+  };
+  ```
+
+  ```css
+  /* styles.css */
+  .background {
+    background-image: url('./images/bg.jpg');
+  }
+
+  .icon {
+    content: image('./icons/star.svg');
+  }
+  ```
+
+T> To filter specific imports, you can use Webpack's built-in [IgnorePlugin](/plugins/ignore-plugin/). The [`filter` option](/loaders/css-loader/#filter), as available in `css-loader`, is not supported.
 
 ### module.parser.javascript
 

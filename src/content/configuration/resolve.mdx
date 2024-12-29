@@ -305,6 +305,32 @@ importing
 - `'foo/bar'`는 `"node"` 키가 조건부 export 객체의 `"require"`키보다 앞에 오기 때문에 `'foo/bar-node.js'`로 해석됩니다.
 - `'foo/baz'`는 `'foo/baz-node.js'`로 해석됩니다.
 
+기본 Webpack 값을 그대로 유지하면서 사용자 지정 필드 이름을 추가하려면 `"..."`를 사용할 수 있습니다.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  //...
+  resolve: {
+    conditionNames: ['my-custom-condition', '...'],
+  },
+};
+```
+
+또는 기본 조건의 우선순위를 먼저 정한 다음 사용자 지정 조건을 추가합니다.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  //...
+  resolve: {
+    conditionNames: ['...', 'my-custom-condition'],
+  },
+};
+```
+
 ### resolve.descriptionFiles
 
 `[string] = ['package.json']`

@@ -135,7 +135,17 @@ import(
   /* webpackPreload: true */
   `./locale/${language}`
 );
+
+import(/* webpackIgnore: true */ 'ignored-module.js');
 ```
+
+##### webpackIgnore
+
+**JavaScript Usage**
+
+`true`로 설정하면 동적 import 구문 파싱을 비활성화합니다.
+
+`import.meta.url`을 사용할 때, 그대로 유지되지 않고, 대신 `baseURI`에 따라 대체됩니다. 모듈의 경우 `new URL("./", import.meta.url)`로 대체되고, 다른 경우에는 `document.baseURI`로 기본 설정됩니다. 이렇게 하면 기본 URL 컨텍스트에 맞게 상대 URL이 올바르게 작동합니다.
 
 ```js
 import(/* webpackIgnore: true */ 'ignored-module.js');
@@ -143,13 +153,33 @@ import(/* webpackIgnore: true */ 'ignored-module.js');
 new URL(/* webpackIgnore: true */ 'file1.css', import.meta.url);
 ```
 
-##### webpackIgnore
-
-`true`로 설정하면 동적 import 구문 파싱을 비활성화합니다.
-
-`import.meta.url`을 사용할 때, 그대로 유지되지 않고, 대신 `baseURI`에 따라 대체됩니다. 모듈의 경우 `new URL("./", import.meta.url)`로 대체되고, 다른 경우에는 `document.baseURI`로 기본 설정됩니다. 이렇게 하면 기본 URL 컨텍스트에 맞게 상대 URL이 올바르게 작동합니다.
-
 W> `webpackIgnore`를 `true`로 설정하면 코드 분할이 해제됩니다.
+
+**CSS Usage**
+
+`webpackIgnore` 주석은 webpack이 특정 가져오기 또는 URL 참조를 처리할지 여부를 제어할 수 있습니다.
+특정 경우에는 바로 사용할 수 있지만 성능상의 이유로 **모든 경우를 지원하지는 않습니다.**
+
+다음의 경우에는 `webpackIgnore`를 지원합니다:
+
+```css
+@import /* webpackIgnore: false */ url(./basic.css);
+
+.class {
+  color: red;
+  background: /* webpackIgnore: true */ url('./url/img.png');
+}
+
+.class {
+  background-image: image-set(
+    /*webpackIgnore:  true*/ url(./url/img1x.png) 1x,
+    url(./url/img2x.png) 2x,
+    url(./url/img3x.png) 3x
+  );
+}
+```
+
+T> 다른 CSS 시나리오의 경우 [`css-loader`는 `webpackIgnore`](/loaders/css-loader/#disable-url-resolving-using-the--webpackignore-true--comment)를 완벽하게 지원하여 필요한 경우 더 많은 유연성을 제공합니다.
 
 ##### webpackChunkName
 

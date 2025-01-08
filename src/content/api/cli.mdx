@@ -45,18 +45,15 @@ W> `npx`를 사용하여 webpack을 실행하려면 `webpack-cli`가 설치되�
 
 webpack-cli는 webpack을 더 쉽게 사용할 수 있도록 다양한 명령을 제공합니다. 기본적으로 webpack은 다음과 같은 명령어를 제공합니다.
 
-| 명령어                      | 사용법                                                | 설명                                                                       |
-| --------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- |
-| [`build`](#build)           | `build\|bundle\|b [entries...] [options]`             | webpack을 실행합니다. (기본 명령어, 생략 가능).                            |
-| [`configtest`](#configtest) | `configtest\|t [config-path]`                         | webpack 설정을 검증합니다.                                                 |
-| [`help`](#help)             | `help\|h [command] [option]`                          | 명령어 및 옵션에 대한 도움말을 표시합니다.                                 |
-| [`info`](#info)             | `info\|i [options]`                                   | 시스템 정보를 출력합니다.                                                  |
-| [`init`](#init)             | `init\|create\|c\|new\|n [generation-path] [options]` | 새로운 webpack 프로젝트를 초기화합니다.                                    |
-| [`loader`](#loader)         | `loader\|l [output-path] [options]`                   | 로더를 스캐폴드합니다.                                                     |
-| [`plugin`](#plugin)         | `plugin\|p [output-path] [options]`                   | 플러그인을 스캐폴드합니다.                                                 |
-| [`serve`](#serve)           | `serve\|server\|s [options]`                          | `webpack-dev-server`를 실행합니다.                                         |
-| [`version`](#version)       | `version\|v [commands...]`                            | `webpack`, `webpack-cli` 및 `webpack-dev-server`의 버전 넘버를 출력합니다. |
-| [`watch`](#watch)           | `watch\|w [entries...] [options]`                     | webpack을 실행하고 파일 변경을 감지합니다.                                 |
+| 명령어                      | 사용법                                    | 설명                                                                       |
+| --------------------------- | ----------------------------------------- | -------------------------------------------------------------------------- |
+| [`build`](#build)           | `build\|bundle\|b [entries...] [options]` | webpack을 실행합니다. (기본 명령어, 생략 가능).                            |
+| [`configtest`](#configtest) | `configtest\|t [config-path]`             | webpack 설정을 검증합니다.                                                 |
+| [`help`](#help)             | `help\|h [command] [option]`              | 명령어 및 옵션에 대한 도움말을 표시합니다.                                 |
+| [`info`](#info)             | `info\|i [options]`                       | 시스템 정보를 출력합니다.                                                  |
+| [`serve`](#serve)           | `serve\|server\|s [options]`              | `webpack-dev-server`를 실행합니다.                                         |
+| [`version`](#version)       | `version\|v [commands...]`                | `webpack`, `webpack-cli` 및 `webpack-dev-server`의 버전 넘버를 출력합니다. |
+| [`watch`](#watch)           | `watch\|w [entries...] [options]`         | webpack을 실행하고 파일 변경을 감지합니다.                                 |
 
 ### Build
 
@@ -74,16 +71,22 @@ npx webpack build --config ./webpack.config.js --stats verbose
 
 ### Init
 
-새 webpack 프로젝트를 초기화하기 위해 사용합니다.
+`create-new-webpack-app`를 사용하여 새로운 webpack 프로젝트를 초기화하기 위해 사용합니다.
 
 ```bash
-npx webpack init [generation-path] [options]
+npx create-new-webpack-app [generation-path] [options]
 ```
 
 **예시**
 
 ```bash
-npx webpack init ./my-app --force --template=default
+npx create-new-webpack-app ./my-app --force --template=default
+```
+
+별칭으로:
+
+```bash
+npx create-new-webpack-app init ./my-app --force --template=default
 ```
 
 #### Generation Path
@@ -104,20 +107,25 @@ npx webpack init ./my-app --force --template=default
 
 질문 없이 프로젝트를 생성합니다. 활성화하면 각 질문에 대한 기본 답변을 사용합니다.
 
-T> [`webpack init` 명령의 전체 문서](https://github.com/webpack/webpack-cli/blob/master/packages/generators/INIT.md)를 참고하세요.
+#### Templates supported
+
+- `--template=default` - 기본 설정을 갖춘 템플릿입니다.
+- `--template=react` - React 설정을 사용한 템플릿입니다.
+- `--template=vue` - Vue 설정을 사용한 템플릿입니다.
+- `--template=svelte` - Svelte 설정을 사용한 템플릿입니다.
 
 ### Loader
 
 로더를 스캐폴드합니다.
 
 ```bash
-npx webpack loader [output-path] [options]
+npx create-new-webpack-app loader [output-path] [options]
 ```
 
 **example**
 
 ```bash
-npx webpack loader ./my-loader --template=default
+npx create-new-webpack-app loader ./my-loader --template=default
 ```
 
 #### Output Path
@@ -137,13 +145,13 @@ npx webpack loader ./my-loader --template=default
 플러그인을 스캐폴드합니다.
 
 ```bash
-npx webpack plugin [output-path] [options]
+npx create-new-webpack-app plugin [output-path] [options]
 ```
 
 **example**
 
 ```bash
-npx webpack plugin ./my-plugin --template=default
+npx create-new-webpack-app plugin ./my-plugin --template=default
 ```
 
 #### Output Path
@@ -157,6 +165,8 @@ npx webpack plugin ./my-plugin --template=default
 `string = 'default'`
 
 템플릿의 유형입니다.
+
+T> `create-new-webpack-app`의 전체 문서를 참고하세요(https://github.com/webpack/webpack-cli/blob/master/packages/create-webpack-app/README.md).
 
 ### Info
 

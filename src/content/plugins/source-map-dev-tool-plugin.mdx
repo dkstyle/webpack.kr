@@ -8,6 +8,7 @@ contributors:
   - byzyk
   - EugeneHlushko
   - chenxsan
+  - snitin315
 translators:
   - Eunbin-Kim
 related:
@@ -46,6 +47,7 @@ new webpack.SourceMapDevToolPlugin(options);
 - `publicPath` (`string`): public path 접두사와 함께 절대 URL을 내보냅니다. (예: `https://example.com/project/`)
 - `fileContext` (`string`): 이 디렉터리를 기준으로 `[file]` 인수를 만듭니다.
 - `sourceRoot` (`string`): 소스맵의 `sourceRoot` 프로퍼티에 커스텀 값을 제공합니다.
+- `debugIds` (`boolean`): `true`이면 소스 및 소스맵에서 고유한 ID를 발행하여 여러 빌드에서 소스 맵을 식별하는 것이 간소화됩니다. 자세한 내용은 [TC39 소스맵 디버깅 ID 제안서](https://github.com/tc39/ecma426/blob/main/proposals/debug-id.md)를 참고하세요.
 
 `fileContext` 옵션은 `../../`가 절대 `[url]`에 나타나지 않도록 상위 디렉터리에 소스맵을 저장하려는 경우에 유용합니다.
 

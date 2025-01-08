@@ -621,6 +621,49 @@ jq('.my-element').animate(/* ... */);
 
 출력 번들에 `import` 구문이 있다는 점을 유의하세요.
 
+이것은 종속성이 Node.js 내장 모듈에 의존하거나 프로토타입을 보존하기 위해 CommonJS 스타일의 `require` 함수가 필요한 경우에 유용합니다. 이는 [`util.inherits`](https://nodejs.org/api/util.html#utilinheritsconstructor-superconstructor)와 같은 함수에 필요합니다. 자세한 내용은 [이 이슈](https://github.com/webpack/webpack.js.org/issues/7446)를 참고하세요.
+
+다음은 프로토타입 구조에 의존하는 코드의 예시입니다.
+
+```js
+function ChunkStream() {
+  Stream.call(this);
+}
+util.inherits(ChunkStream, Stream);
+```
+
+`node-commonjs`를 사용하면 프로토타입 체인이 보존되는지 확인할 수 있습니다.
+
+```js
+const { builtinModules } = require('module');
+
+module.exports = {
+  experiments: { outputModule: true },
+  externalsType: 'node-commonjs',
+  externals: ({ request }, callback) => {
+    if (/^node:/.test(request) || builtinModules.includes(request)) {
+      return callback(null, 'node-commonjs ' + request);
+    }
+    callback();
+  },
+};
+```
+
+이렇게 하면 다음과 같은 결과가 생성됩니다.
+
+```js
+import { createRequire as __WEBPACK_EXTERNAL_createRequire } from "node:module";
+// ...
+/***/ 2613:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("stream");
+
+/***/ }),
+```
+
+이러한 설정은 프로토타입 구조를 그대로 유지하여 Node.js에 내장된 기능의 문제를 해결합니다.
+
 ### externalsType.promise
 
 외부 속성의 기본 유형을 `'promise'`로 지정합니다. Webpack은 외부 속성을 전역변수([`'var'`](#externalstypevar)와 유사함)로 읽고 `await` 합니다.

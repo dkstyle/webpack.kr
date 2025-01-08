@@ -399,7 +399,7 @@ import { header, footer } from './styles.module.css';
 
 #### module.parser.css.url
 
-This option enables or disables the handling of URLs in functions such as `url()`, `image-set()`, `src()`, and `image()` within CSS files. When enabled, these URLs are resolved and processed by webpack.
+이 옵션은 CSS 파일 내의 `url()`, `image-set()`, `src()`, `image()`와 같은 함수에서 URL 처리를 활성화하거나 비활성화합니다. 활성화하면 이러한 URL은 webpack에서 해석되고 처리됩니다.
 
 - Type: `boolean`
 - Available: 5.97.0+
@@ -428,7 +428,7 @@ This option enables or disables the handling of URLs in functions such as `url()
   }
   ```
 
-T> To filter specific imports, you can use Webpack's built-in [IgnorePlugin](/plugins/ignore-plugin/). The [`filter` option](/loaders/css-loader/#filter), as available in `css-loader`, is not supported.
+T> 특정 가져오기를 필터링하려면 Webpack의 기본 제공 플러그인[IgnorePlugin](/plugins/ignore-plugin/)을 사용할 수 있습니다. `css-loader`에서 사용 가능한 [`filter` 옵션](/loaders/css-loader/#filter)은 지원되지 않습니다.
 
 ### module.parser.javascript
 

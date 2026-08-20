@@ -132,11 +132,11 @@ export default (env) =>
             from: "./googlef7893965f8fb4e95.html",
             to: "./",
           },
-          "CNAME",
-          {
-            from: ".well-known/atproto-did",
-            to: ".well-known/",
-          },
+          // "CNAME",
+          // {
+          //   from: ".well-known/atproto-did",
+          //   to: ".well-known/",
+          // },
         ],
       }),
       new WebpackPwaManifest({

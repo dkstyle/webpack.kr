@@ -48,6 +48,14 @@ Webpack은 다음 조건에 따라 자동으로 청크를 분할합니다.
 
 마지막 두 가지 조건을 충족하려고 할 때 더 큰 청크가 선호됩니다.
 
+T> The default request limits are heuristic guardrails, not HTTP/1-specific
+recommendations. Browsers and transports such as HTTP/2 can handle many parallel
+requests, but extra chunks still add scheduling, header, cache lookup, parsing,
+and evaluation overhead. If your app benefits from more granular chunks, adjust
+[`splitChunks.maxAsyncRequests`](#splitchunksmaxasyncrequests) and
+[`splitChunks.maxInitialRequests`](#splitchunksmaxinitialrequests), then measure
+the result for your users.
+
 ## Configuration
 
 Webpack은 이 기능에 대한 더 많은 제어를 원하는 개발자를 위해 옵션 세트를 제공합니다.

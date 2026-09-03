@@ -152,7 +152,7 @@ export default {
 };
 ```
 
-T> 이 설정을 단일 페이지 애플리케이션용 [HtmlWebpackPlugin](/plugins/html-webpack-plugin/) 또는 멀티 페이지 애플리케이션용 [ChunksWebpackPlugin](https://github.com/yoriiis/chunks-webpack-plugin?tab=readme-ov-file#chunkswebpackplugin)과 결합할 수 있습니다. 이는 생성 된 모든 vendor 청크를 주입합니다.
+T> 이 설정을 [`output.html`](/configuration/output/#outputhtml)과 함께 사용하세요. webpack이 단일 페이지 또는 엔트리별 페이지를 생성하고, 생성된 모든 vendor 청크를 자동으로 주입합니다. [Native HTML](/guides/native-html/)을 참고하세요.
 
 ### splitChunks.maxAsyncRequests
 

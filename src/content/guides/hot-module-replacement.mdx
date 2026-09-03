@@ -39,7 +39,9 @@ W> **HMR**은 프로덕션용이 아니므로 개발용으로만 사용해야 �
 
 ## Enabling HMR
 
-이 기능은 생산성에 많은 도움을 줍니다. [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 설정을 업데이트하고 webpack의 내장 HMR 플러그인을 사용하면 됩니다. `index.js` 모듈에서 사용될 것이므로 `print.js`의 엔트리 포인트도 제거합니다.
+T> Webpack은 [`output.html`](/configuration/output/#outputhtml)로 페이지를 직접 생성할 수 있습니다. [Native HTML](/guides/native-html/)을 참고하세요. 이 가이드에서는 모든 엔트리의 script를 포함하는 단일 페이지 대신 엔트리 포인트별 페이지를 내보내야 동일한 결과가 되므로 `HtmlWebpackPlugin`을 계속 사용합니다.
+
+이 기능은 생산성을 크게 높여줍니다. [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 설정을 업데이트하고 webpack의 내장 HMR plugin을 사용하면 됩니다. 이제 `index.js` 모듈이 `print.js`를 사용하므로 해당 엔트리 포인트도 제거합니다.
 
 `webpack-dev-server` v4.0.0부터 Hot Module Replacement가 기본적으로 활성화되어 있습니다.
 

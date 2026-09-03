@@ -3,7 +3,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { TransformStream } from "node:stream/web";
 import CopyWebpackPlugin from "copy-webpack-plugin";
-import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import RedirectWebpackPlugin from "redirect-webpack-plugin";
 import SSGPlugin from "static-site-generator-webpack-plugin";
 
@@ -38,12 +37,10 @@ export default (env) =>
       filename: ".server/[name].[contenthash].js",
       libraryTarget: "umd",
     },
+    // 서버 번들은 페이지만 렌더링하며, 여기서 내보내는 스타일시트는 참조되지
+    // 않으므로 이곳에서 최소화할 대상이 없습니다.
     optimization: {
-      minimizer: [
-        new CssMinimizerPlugin({
-          minify: CssMinimizerPlugin.lightningCssMinify,
-        }),
-      ],
+      minimize: false,
     },
     plugins: [
       new SSGPlugin({

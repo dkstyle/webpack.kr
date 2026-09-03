@@ -1729,7 +1729,9 @@ conditions에 대한 두가지 입력 값이 있습니다.
 
 Rule의 [`test`](#ruletest), [`include`](#ruleinclude), [`exclude`](#ruleexclude) 그리고 [`resource`](#ruleresource) 프로퍼티가 resource와 일치하고 [`issuer`](#ruleissuer) 프로퍼티가 issuer와 일치합니다.
 
-여러 조건을 사용하는 경우, 모든 조건이 일치해야 합니다.
+webpack 5.110.0부터 운영체제와 무관한 [`glob`](#ruleglob)과 리소스 자체 패키지 내부 경로인 [`descriptionRelativePath`](#ruledescriptionrelativepath)로도 리소스를 일치시킬 수 있습니다.
+
+여러 조건을 사용하면 모든 조건이 일치해야 합니다.
 
 W> 조심하세요! resource는 파일이 _해석된_ 경로이며, 이는 심볼릭 링크를 사용하는 resource가 심볼릭 링크의 위치가 _아닌_ 실제 경로임을 의미합니다. 이것은 `npm link`와 같은 패키지를 심볼릭 링크하는 도구를 사용할 때 기억하면 좋습니다. `/node_modules/`같은 일반적인 조건은 심볼릭 링크 된 파일을 실수로 놓칠 수 있습니다. resource가 심볼릭 링크 경로로 확인되도록 [`resolve.symlinks`](/configuration/resolve/#resolvesymlinks)를 통해 심볼릭 링크 해석을 끌 수 있습니다.
 
@@ -1820,6 +1822,35 @@ export default {
 };
 ```
 
+## Rule.descriptionRelativePath
+
+<Badge text="5.110.0+" />
+
+모듈의 description 파일(일반적으로 가장 가까운 `package.json`) 디렉터리를 기준으로 한 경로(예: `./lib/button.js`)와 일치하는 [`Condition`](#condition)입니다. 경로는 항상 slash를 사용하므로 모든 운영체제에서 같은 규칙이 일치합니다.
+
+hoist된 `node_modules`, pnpm store, workspace symlink처럼 설치 구조에 따라 달라지는 절대 위치 대신 패키지 내부 위치로 파일을 지정할 때 사용합니다.
+
+**webpack.config.js**
+
+```js
+export default {
+  // ...
+  module: {
+    rules: [
+      {
+        descriptionData: {
+          name: "some-package",
+        },
+        descriptionRelativePath: /^\.\/src\//,
+        // ...
+      },
+    ],
+  },
+};
+```
+
+[match resource](/api/loaders/#inline-matchresource)가 리소스를 교체한 경우 원래 요청의 description 파일이 더 이상 해당 리소스를 설명하지 않으므로 이 조건을 적용하지 않습니다.
+
 ## Rule.enforce
 
 `string`
@@ -1865,6 +1896,66 @@ import { c } from "!!./file3.js";
 ## Rule.include
 
 조건과 일치하는 모든 모듈을 포함합니다. `Rule.include` 옵션을 사용하면 `Rule.resource` 옵션을 사용할 수 없습니다. 자세한 내용은 [`Rule.resource`](#ruleresource) 및 [`Condition.include`](#condition)를 참고하세요.
+
+## Rule.glob
+
+<Badge text="5.110.0+" />
+
+`string` `[string]`
+
+모듈 리소스를 하나 이상의 glob pattern과 일치시킵니다. 정규 표현식과 달리 glob은 모든 운영체제에서 같은 방식으로 일치합니다. pattern과 검사 경로 모두에서 `/`와 `\`를 경로 구분자로 읽으므로 macOS에서 작성한 규칙이 Windows에서도 일치합니다. 그렇지 않은 정규 표현식 조건을 보고하는 [`performance.osDependentRules`](/configuration/performance/#performanceosdependentrules)도 참고하세요.
+
+**webpack.config.js**
+
+```js
+export default {
+  // ...
+  module: {
+    rules: [
+      {
+        glob: "src/**/*.css",
+        type: "css/module",
+      },
+    ],
+  },
+};
+```
+
+여러 pattern은 OR로 결합되고 `!` 접두사는 일치 항목을 제외합니다. `!` pattern만 포함한 목록은 전체 항목에서 대상을 제외하므로 제외 목록으로 동작합니다.
+
+```js
+export default {
+  // ...
+  module: {
+    rules: [
+      {
+        // test 및 생성 파일을 제외한 모든 .ts 파일
+        glob: ["**/*.ts", "!**/*.test.ts", "!**/generated/**"],
+        loader: "ts-loader",
+      },
+    ],
+  },
+};
+```
+
+상대 pattern은 모든 깊이에서 일치하므로 `"src/**/*.css"`는 `packages/ui/src/theme.css`와도 일치합니다. 특정 디렉터리로 제한하려면 절대 경로로 pattern을 시작하세요.
+
+`glob`은 다른 조건과 결합됩니다. [`test`](#ruletest), [`include`](#ruleinclude), [`exclude`](#ruleexclude)도 함께 일치해야 합니다. [`Condition`](#condition) 객체 안에서도 사용할 수 있어 condition을 받는 모든 위치에서 사용할 수 있습니다.
+
+```js
+export default {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: { glob: "src/**" },
+        loader: "babel-loader",
+      },
+    ],
+  },
+};
+```
 
 ## Rule.issuer
 
@@ -2433,7 +2524,7 @@ Webpack 5.87.0부터 `undefined` `null`과 같은 falsy 값을 사용하여 조�
 
 `Rule.use`는 모듈에 적용되는 [UseEntry](#useentry)의 배열일 수 있습니다.
 
-`use: [ 'style-loader' ]` 같이 string을 전달하는 것은 `use: [ { loader: 'style-loader '} ]` 같이 loader 프로퍼티에 대한 단축어 입니다.
+문자열을 전달하는 `use: [ 'sass-loader' ]`는 loader property를 사용하는 `use: [ { loader: 'sass-loader' } ]`의 shorthand입니다.
 
 로더는 여러 로더를 전달하여 연결될 수 있으며, 이는 오른쪽에서 왼쪽으로, 마지막 설정에서 첫 번째 설정 순서로 적용됩니다.
 
@@ -2447,13 +2538,7 @@ export default {
       {
         // ...
         use: [
-          "style-loader",
-          {
-            loader: "css-loader",
-            options: {
-              importLoaders: 1,
-            },
-          },
+          "postcss-loader",
           {
             loader: "less-loader",
             options: {
@@ -2461,6 +2546,7 @@ export default {
             },
           },
         ],
+        type: "css/auto",
       },
     ],
   },
@@ -2478,7 +2564,7 @@ export default {
 - `realResource`: 항상 로드되는 모듈의 경로
 - `resource`: 로드되는 모듈의 경로. 요청 문자열의 `!=!`를 통해 리소스 이름을 덮어 쓰는 경우를 제외하고는 일반적으로 `realResource`와 같습니다.
 
-반환값에 `use: [ 'style-loader' ]`같이 배열과 동일한 단축어를 사용할 수 있습니다.
+반환 값에도 배열과 같은 shorthand를 사용할 수 있습니다(예: `use: [ 'sass-loader' ]`).
 
 **webpack.config.js**
 
@@ -2654,6 +2740,8 @@ Condition은 아래 항목중의 하나가 됩니다.
 
 `{ not: [Condition] }`: 모든 Condition이 일치하면 안 됩니다.
 
+`{ glob: string | [string] }`: <Badge text="5.110.0+" /> 입력이 glob pattern 중 하나와 일치해야 합니다. pattern 문법은 [`Rule.glob`](#ruleglob)을 참고하세요.
+
 **Example:**
 
 ```js
@@ -2706,9 +2794,9 @@ export default {
   module: {
     rules: [
       {
-        loader: "css-loader",
+        loader: "sass-loader",
         options: {
-          modules: true,
+          sourceMap: true,
         },
       },
     ],

@@ -54,14 +54,16 @@ webpack을 사용하는 방법에 따라 여러 가지 방법으로 플러그인
 ```js
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import webpack from "webpack"; // 빌트인 플러그인에 접근하기 위함
+import webpack from "webpack"; // 내장 plugin에 접근
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  entry: "./path/to/my/entry/file.js",
+  entry: "./src/index.html",
+  experiments: {
+    html: true,
+  },
   output: {
     filename: "my-first-webpack.bundle.js",
     path: path.resolve(__dirname, "dist"),
@@ -74,14 +76,11 @@ export default {
       },
     ],
   },
-  plugins: [
-    new webpack.ProgressPlugin(),
-    new HtmlWebpackPlugin({ template: "./src/index.html" }),
-  ],
+  plugins: [new webpack.ProgressPlugin()],
 };
 ```
 
-`ProgressPlugin`은 컴파일하는 동안 리포트를 사용자 정의로 생성 할 수 있으며 `HtmlWebpackPlugin`은 `script`를 사용하여 `my-first-webpack.bundle.js` 파일을 포함하는 HTML 파일을 생성합니다.
+`ProgressPlugin`은 compilation 중 진행 상황의 보고 방식을 설정합니다. `src/index.html`이 엔트리이므로 webpack은 해당 페이지를 내보내고 참조된 `<script src>`를 빌드된 청크로 재작성합니다. 별도 plugin은 필요하지 않습니다. [Native HTML](/guides/native-html/)을 참고하세요.
 
 ### Node API
 

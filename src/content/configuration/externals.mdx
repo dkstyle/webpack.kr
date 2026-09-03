@@ -20,6 +20,7 @@ contributors:
   - anshumanv
   - SaulSilver
   - fi3ework
+  - bjohansebas
 translators:
   - choilim
 ---
@@ -194,6 +195,31 @@ export default {
   },
 };
 ```
+
+### object with options
+
+<Badge text="5.110.0+" />
+
+external 값은 `external` 아래의 target과 webpack의 처리 방식을 설명하는 옵션을 포함한 객체로도 지정할 수 있습니다.
+
+```js
+export default {
+  // ...
+  externals: {
+    "@scope/icons": {
+      external: "commonjs @scope/icons",
+      sideEffects: false,
+    },
+  },
+};
+```
+
+- `external` - 위 형식 중 하나로 지정한 target(externals 타입별 문자열, 배열 또는 객체)입니다.
+- `sideEffects` - external import에 side effect가 있는지 여부로, `package.json`의 [`sideEffects` 플래그](/guides/tree-shaking/#mark-the-file-as-side-effect-free)와 같은 개념입니다.
+
+webpack은 external을 분석할 수 없으므로 이를 가져오면 관찰 가능한 작업이 수행된다고 가정하고 export를 아무도 읽지 않아도 import를 유지합니다. `sideEffects: false`는 그 반대를 나타내며 export가 사용되지 않으면 external을 완전히 제거할 수 있게 합니다. 특히 barrel 파일이 가져오는 큰 external은 그렇지 않으면 barrel을 사용하는 모든 청크에 요청이 남으므로 중요합니다.
+
+W> 패키지에 실제로 side effect가 없을 때만 설정하세요. 잘못 지정하면 런타임이 side effect를 위해 의존하는 import가 제거되며 빌드 시점이 아니라 런타임에 오류가 발생합니다.
 
 ### function
 
@@ -1055,16 +1081,19 @@ jq(".my-element").animate(/* ... */);
 
 특정 대상에 대한 외부 프리셋 설정을 활성화합니다.
 
-| Option             | Description                                                                                                                                                                             | Input Type |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `electron`         | `electron`, `ipc` 또는 `shell`과 같은 main 및 preload 컨텍스트에서 공통 일렉트론 내장 모듈을 외부로 취급하고, 사용 시 `require()`를 통해 로드합니다.                                    | boolean    |
-| `electronMain`     | `app`, `ipc-main` 또는 `shell`과 같은 같은 주 컨텍스트에서 일렉트론 내장 모듈을 외부로 취급하고, 사용 시 `require()`를 통해 로드합니다.                                                 | boolean    |
-| `electronPreload`  | `web-frame`, `ipc-renderer` 또는 `shell`과 같은 사전 로드 컨텍스트에서 일렉트론 내장 모듈을 외부로 취급하고, 사용 시 require()를 통해 로드합니다.                                       | boolean    |
-| `electronRenderer` | `web-frame`, `ipc-renderer` 또는 `shell`과 같은 렌더러 컨텍스트에서 일렉토론 내장 모듈을 외부로 취급하고, 사용 시 `require()`를 통해 로드합니다.                                        | boolean    |
-| `node`             | `fs`, `path` 또는 `vm`과 같은 node.js 내장 모듈을 외부 모듈로 취급하고, 사용 시 `require()`를 통해 로드합니다.                                                                          | boolean    |
-| `nwjs`             | `NW.js` 레거시 `nw.gui` 모듈을 외부 모듈로 취급하고, 사용 시 `require()`를 통해 로드합니다.                                                                                             | boolean    |
-| `web`              | `http(s)://...` 그리고 `std:...`에 대한 참조를 외부로 취급하고, 사용 시 `import`를 통해 로드합니다 **(청크의 다른 코드보다 먼저 외부가 실행되므로 실행 순서가 변경됩니다)**.            | boolean    |
-| `webAsync`         | `http(s)://...` 그리고 `std:...`에 대한 참조를 외부로 취급하고, 사용 시 `async import()`를 통해 로드합니다 **(이 유형의 외부 모듈은 `async` 모듈이며, 실행에 다양한 영향을 미칩니다)**. | boolean    |
+| 옵션               | 설명                                                                                                                                                                                                                                          | 입력 타입       |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| `electron`         | main 및 preload context에서 `electron`, `ipc`, `shell` 같은 일반 Electron 내장 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                 | boolean         |
+| `electronMain`     | main context에서 `app`, `ipc-main`, `shell` 같은 Electron 내장 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                                 | boolean         |
+| `electronPreload`  | preload context에서 `web-frame`, `ipc-renderer`, `shell` 같은 Electron 내장 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                    | boolean         |
+| `electronRenderer` | renderer context에서 `web-frame`, `ipc-renderer`, `shell` 같은 Electron 내장 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                   | boolean         |
+| `bun`              | `bun`, `bun:sqlite`, `bun:ffi` 같은 Bun 내장 모듈과 Node.js 내장 모듈을 external로 처리하고 사용할 때 `import`로 로드합니다(Bun 런타임용).                                                                                                    | boolean         |
+| `deno`             | `fs`, `path`, `vm` 같은 Node.js 내장 모듈을 external로 처리하고 사용할 때 필수 `node:` specifier로 로드합니다(Deno 런타임용).                                                                                                                 | boolean         |
+| `node`             | `fs`, `path`, `vm` 같은 Node.js 내장 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                                                           | boolean         |
+| `nodeModules`      | <Badge text="5.110.0+" /> 설치된 패키지(`node_modules` 디렉터리로 리졸브되는 요청)를 external로 처리하고 번들링 대신 런타임에 `require()`/`import`로 로드합니다. [`externalsPresets.nodeModules`](#externalspresetsnodemodules)를 참고하세요. | boolean, object |
+| `nwjs`             | `NW.js` legacy `nw.gui` 모듈을 external로 처리하고 사용할 때 `require()`로 로드합니다.                                                                                                                                                        | boolean         |
+| `web`              | `http(s)://...` 및 `std:...` 참조를 external로 처리하고 사용할 때 `import`로 로드합니다. **(external이 청크의 다른 코드보다 먼저 실행되므로 실행 순서가 변경됩니다.)**                                                                        | boolean         |
+| `webAsync`         | `http(s)://...` 및 `std:...` 참조를 external로 처리하고 사용할 때 `async import()`로 로드합니다. **(이 external 타입은 `async` 모듈이므로 실행에 여러 영향을 줍니다.)**                                                                       | boolean         |
 
 node.js 관련 프리셋으로 ES 모듈을 출력하려는 경우, webpack은 기본`externalsType`을 [`node-commonjs`](#externalstypenode-commonjs)로 설정하여, `require()`를 사용하는 대신 require 함수를 구성하기 위해 `createRequire`를 사용합니다.
 
@@ -1082,3 +1111,60 @@ export default {
   },
 };
 ```
+
+### externalsPresets.nodeModules
+
+<Badge text="5.110.0+" />
+
+`boolean` `object`
+
+`node_modules` 디렉터리로 리졸브되는 모든 요청을 external로 처리하고 번들링 대신 런타임에 `require()` 또는 `import`로 로드합니다. 일반적으로 server-side 빌드에 필요한 동작입니다. 의존성이 이미 출력 옆에 설치되어 있으므로 번들링하면 빌드가 느려지고 출력만 커집니다.
+
+**webpack.config.js**
+
+```js
+export default {
+  // ...
+  target: "node",
+  externalsPresets: {
+    nodeModules: true,
+  },
+};
+```
+
+preset은 요청의 작성 방식이 아니라 리졸브 위치를 확인하므로 symlink를 통해 `node_modules`로 리졸브되는 요청(pnpm store 또는 연결된 workspace 패키지)도 external 처리합니다. 다음 항목은 external 처리되지 않으므로 별도로 나열할 필요가 없습니다.
+
+- 설치된 패키지가 아닌 상대 및 절대 요청과 `#` subpath import
+- 런타임이 자체적으로 로드할 수 있는 파일로 리졸브되지 않는 항목, 즉 `.js`, `.mjs`, `.cjs`, `.json`, `.node` 이외의 파일. JavaScript에서 가져온 패키지 CSS나 애셋은 번들에 남아 webpack이 계속 처리합니다.
+- 자체 preset이 처리하는 CSS `@import` 및 `url()` 참조
+- [`resolve.alias`](/configuration/resolve/#resolvealias)가 다른 패키지로 보내는 요청. external은 원래 요청을 유지하여 잘못된 대상을 로드하기 때문입니다.
+
+external은 [`node-commonjs`](#externalstypenode-commonjs)로 내보내며 [`output.module`](/configuration/output/#outputmodule)이 활성화되면 [`module-import`](#externalstypemodule-import)로 내보냅니다. `require()` 의존성은 어느 경우에도 `node-commonjs`를 유지하여 `require()` semantics를 보존합니다.
+
+T> 이 preset은 webpack 외부에서 같은 작업을 하던 [`webpack-node-externals`](https://github.com/liady/webpack-node-externals) plugin을 대체합니다. 요청 문자열에서 추측하지 않고 resolver 결과를 사용할 수 있습니다.
+
+#### externalsPresets.nodeModules.allowlist
+
+일부 설치된 패키지는 계속 번들링해야 합니다. 출력은 CommonJS인데 ESM만 제공하는 패키지, 출력 옆에 배포되지 않는 workspace 패키지, loader로 처리하려는 패키지 등이 해당합니다. 번들에 유지할 항목을 `allowlist`에 전달하세요.
+
+```js
+export default {
+  // ...
+  externalsPresets: {
+    nodeModules: {
+      allowlist: [
+        // 정확한 요청
+        "some-esm-only-package",
+        // scope 아래의 모든 항목
+        /^@my-company\//,
+        // 또는 요청별로 결정
+        (request) => request.startsWith("internal-"),
+      ],
+    },
+  },
+};
+```
+
+각 항목은 정확히 일치하는 문자열, 요청을 검사하는 `RegExp`, 또는 번들에 유지할 요청에 `true`를 반환하는 함수입니다.
+
+T> 목록을 조정할 때 [`performance.unusedExternals`](/configuration/performance/#performanceunusedexternals)를 활성화하세요. 어떤 모듈도 가져오지 않은 `externals` 요청을 보고하므로 철자가 틀린 allowlist 항목을 찾을 수 있습니다.

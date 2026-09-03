@@ -537,6 +537,10 @@ export default {
       templateLiteral: true,
       // 이 환경은 `import.meta.dirname`과 `import.meta.filename`을 지원합니다.
       importMetaDirnameAndFilename: false,
+      // 환경이 지연 모듈 평가('import defer * as ns from "..."', 'import.defer("...")')를 지원합니다. webpack 5.110.0부터 지원됩니다.
+      deferImport: false,
+      // 환경이 source phase import('import source m from "..."', 'import.source("...")')를 지원합니다. webpack 5.110.0부터 지원됩니다.
+      sourceImport: false,
     },
   },
 };
@@ -672,16 +676,18 @@ T> 이 옵션은 온 디맨드 로드되는 청크의 출력 파일에는 영향
 
 파일 수준에서 사용할 수 있는 substitution입니다.
 
-| Template   | Description                                                                   |
-| ---------- | ----------------------------------------------------------------------------- |
-| [file]     | 쿼리 또는 fragment가 없는 파일 이름 및 경로                                   |
-| [query]    | 앞에 `?`가 있는 쿼리                                                          |
-| [fragment] | 앞에 `#`가 있는 fragment                                                      |
-| [base]     | 경로없이 확장자를 포함한 파일 이름                                            |
-| [filebase] | 더 이상 지원되지 않음                                                         |
-| [path]     | 파일 이름을 제외한 경로                                                       |
-| [name]     | 확장자나 경로가 없는 파일 이름                                                |
-| [ext]      | `.`으로 시작하는 확장자 ([output.filename](#outputfilename)에 사용할 수 없음) |
+| Template        | 설명                                                                            |
+| --------------- | ------------------------------------------------------------------------------- |
+| [file]          | query 또는 fragment가 없는 파일 이름과 경로                                     |
+| [query]         | 앞에 `?`가 있는 query                                                           |
+| [fragment]      | 앞에 `#`가 있는 fragment                                                        |
+| [base]          | 경로 없이 확장자를 포함한 파일 이름                                             |
+| [filebase]      | `[base]`와 같지만 deprecated                                                    |
+| [path]          | 파일 이름을 제외한 경로                                                         |
+| [containedfile] | `[file]`과 같지만 `output.path` 내부에 유지                                     |
+| [containedpath] | `[path]`와 같지만 `output.path` 내부에 유지                                     |
+| [name]          | 확장자와 경로가 없는 파일 이름                                                  |
+| [ext]           | 앞에 `.`이 있는 확장자([output.filename](#outputfilename)에서는 사용할 수 없음) |
 
 URL 수준에서 사용할 수 있는 substitution입니다.
 
@@ -691,9 +697,24 @@ URL 수준에서 사용할 수 있는 substitution입니다.
 
 T> `[file]`은 `[path][base]`와 같습니다. `[base]`는 `[name][ext]`와 같습니다. 전체 경로는 `[path][name][ext][query][fragment]` 또는 `[path][base][query][fragment]` 또는 `[file][query][fragment]`입니다.
 
-해시 길이(`[hash]`, `[contenthash]` 또는 `[chunkhash]`)는 `[hash:16]`(기본값 20)을 사용하여 지정할 수 있습니다. 또는 [`output.hashDigestLength`](#outputhashdigestlength)를 지정하여 길이를 전역적으로 설정합니다.
+`[containedfile]`과 `[containedpath]` <Badge text="5.110.0+" />는 결과가 항상 [`output.path`](#outputpath) 아래에 있도록 `[file]`과 `[path]`를 재작성합니다. 앞쪽 절대 root와 모든 `../` segment를 `_/`로 바꿉니다. [`context`](/configuration/entry-context/#context) 밖에서 리졸브된 모듈, 연결된 패키지, 프로젝트 root 위의 파일은 `[path]`가 `..`로 시작하며 이를 파일 이름 template에 사용하면 애셋을 출력 디렉터리 밖에 기록합니다. contained placeholder는 대신 같은 디렉터리 구조를 출력 디렉터리 안에 유지합니다.
 
-webpack 5.108.0부터 해시 다이제스트 인코딩을 `[<hash>:<digest>:<length>]` 형식으로 인라인 설정할 수도 있습니다. 예: `[contenthash:base64:8]`. 다이제스트는 기본적으로 [`output.hashDigest`](#outputhashdigest)(`hex`)로 설정되며, CSS 모듈 [`localIdentName`](/loaders/css-loader/#localidentname) 자리 표시자에서도 동일한 형식이 작동합니다.
+```js
+// context가 ./src이고 모듈이 ../shared/logo.png에 있는 경우
+export default {
+  // ...
+  output: {
+    assetModuleFilename: "[containedpath][name][ext]", // _/shared/logo.png
+    // "[path][name][ext]"는 output.path 밖의 ../shared/logo.png로 내보냅니다.
+  },
+};
+```
+
+[`experiments.futureDefaults`](/configuration/experiments/#experimentsfuturedefaults)를 활성화하면 애셋과 HTML 모듈에서 `[path]`와 `[file]`이 이미 이 방식으로 동작하므로 해당 template은 contained placeholder와 같은 값으로 리졸브됩니다. 이는 webpack 6에서 기본 동작이 됩니다.
+
+hash 길이(`[hash]`, `[contenthash]`, `[chunkhash]`)는 `[hash:16]` 형식으로 지정할 수 있으며 기본값은 20입니다. 또는 [`output.hashDigestLength`](#outputhashdigestlength)로 전역 길이를 설정할 수 있습니다.
+
+webpack 5.108.0부터 hash digest encoding을 `[<hash>:<digest>:<length>]` 형식으로 인라인 설정할 수도 있습니다(예: `[contenthash:base64:8]`). digest 기본값은 [`output.hashDigest`](#outputhashdigest)(`hex`)이며 같은 형식을 CSS module [`localIdentName`](/configuration/module/#modulegenerator) placeholder에서도 사용할 수 있습니다.
 
 실제 파일 이름에 자리 표시자 중 하나를 사용하려는 경우 자리 표시자 대체를 필터링할 수 있습니다. 예를 들어 `[name].js` 파일을 출력하려면 대괄호 사이에 백슬래시를 추가하여 `[name]` 자리 표시자를 이스케이프해야 합니다. 따라서 `[\name\]`은 애셋의 `name`으로 대체되는 대신 `[name]`을 생성합니다.
 
@@ -1373,6 +1394,31 @@ export default {
 ```js
 globalThis.clientContainer.define(/* define args */); // 또는 'amd-require' window['clientContainer'].require(/*require args*/);
 ```
+
+### output.library.umdAmdContainer
+
+<Badge text="5.110.0+" />
+
+`string`
+
+`define`을 전역이 아닌 container 객체에 노출하는 AMD 방식 loader용 분기를 UMD wrapper에 추가합니다. container는 점으로 구분된 경로로 지정합니다. 분기는 표준 `define.amd` 바로 뒤에 내보내므로 일반 AMD loader가 계속 우선하며, 해당 container가 존재하는 환경에서만 사용됩니다.
+
+```js
+export default {
+  // ...
+  output: {
+    library: {
+      name: "MyLibrary",
+      type: "umd",
+      umdAmdContainer: "myContainer.amdLoader",
+    },
+  },
+};
+```
+
+값은 임의의 표현식이 아니라 점으로 구분된 식별자 경로(`myContainer.amdLoader`)여야 합니다.
+
+W> `amd`와 `amd-require` library 타입에 적용되어 container를 통해 `define`/`require`를 호출하는 [`output.library.amdContainer`](#outputlibraryamdcontainer)와는 다릅니다. `umdAmdContainer`는 `umd` wrapper의 감지 체인에 분기만 추가합니다.
 
 ### output.library.name
 
@@ -2809,6 +2855,28 @@ export default {
   },
 };
 ```
+
+### output.resourceHints.dedupe
+
+<Badge text="5.110.0+" />
+
+`boolean = false`
+
+문서가 이미 preload 또는 prefetch하는 청크에는 런타임이 `<link rel="prefetch">`를 주입하지 않습니다. Chrome을 포함한 일부 브라우저는 두 link가 모두 있으면 청크를 두 번 가져옵니다.
+
+```js
+export default {
+  // ...
+  output: {
+    resourceHints: {
+      initial: true,
+      dedupe: true,
+    },
+  },
+};
+```
+
+T> [`performance.conflictingResourceHints`](/configuration/performance/#performanceconflictingresourcehints)는 이 문제의 다른 측면, 즉 같은 위치에서 서로 반대 의미인 prefetch와 preload를 모두 요청한 청크를 보고합니다.
 
 ### output.resourceHints.manifest
 

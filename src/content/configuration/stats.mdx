@@ -805,6 +805,40 @@ export default {
 };
 ```
 
+### stats.hints
+
+<Badge text="5.110.0+" />
+
+`boolean = true`
+
+[`performance.hints: "stats"`](/configuration/performance/#performancehints)로 보고된 performance hint를 추가합니다. 이 값을 사용하면 hint를 경고나 오류로 내보내지 않으므로 stats에서 확인합니다.
+
+```js
+export default {
+  // ...
+  stats: {
+    hints: false,
+  },
+};
+```
+
+### stats.hintsCount
+
+<Badge text="5.110.0+" />
+
+`boolean = true`
+
+performance hint 수를 추가합니다.
+
+```js
+export default {
+  // ...
+  stats: {
+    hintsCount: false,
+  },
+};
+```
+
 ### stats.ids
 
 `boolean = false`

@@ -384,6 +384,29 @@ import("./module-a").then((moduleA) => {
 
 컴파일의 해시에 대한 접근을 제공합니다.
 
+## \_\_webpack_css_server_styles\_\_ (webpack-specific)
+
+<Badge text="5.110.0+" />
+
+`string`
+
+DOM 없이 렌더링하는 동안 수집한 CSS를 하나의 문자열로 반환합니다. 내장 CSS 지원([`experiments.css`](/configuration/experiments/#experimentscss))이 server-side rendering처럼 `<style>`을 삽입할 `document`가 없는 환경에서 실행되면 webpack은 style을 전역 registry에 기록합니다. 이 변수는 style이 적용된 순서대로 registry를 읽어 서버가 전송하는 HTML에 인라인으로 삽입할 수 있게 합니다.
+
+```js
+import { renderToString } from "react-dom/server";
+import App from "./App.js";
+
+export function render() {
+  const html = renderToString(<App />);
+  // render가 가져온 모든 스타일시트를 적용 순서대로 반환
+  const css = __webpack_css_server_styles__;
+
+  return `<!doctype html><html><head><style>${css}</style></head><body>${html}</body></html>`;
+}
+```
+
+registry는 style 식별자를 key로 사용하고 [`output.uniqueName`](/configuration/output/#outputuniquename)으로 namespace를 지정하므로, 같은 프로세스에서 렌더링되는 여러 번들이 서로의 style을 읽지 않습니다.
+
 ## \_\_webpack_get_script_filename\_\_ (webpack-specific)
 
 `function (chunkId)`

@@ -283,6 +283,36 @@ webpack(
 W> 다중 설정은 **병렬로 실행되지 않습니다**.
 각 구성은 이전 구성이 완료된 후에만 처리됩니다.
 
+### MultiCompiler hooks
+
+`MultiCompiler`는 child compiler의 hook을 하나로 노출하므로 plugin이 각 child 대신 전체 집합을 tap할 수 있습니다.
+
+| Hook                | 타입                                    | 설명                                                                                  |
+| ------------------- | --------------------------------------- | ------------------------------------------------------------------------------------- |
+| `done`              | `SyncHook<[MultiStats, Compiler[]]>`    | 모든 child compilation이 끝나면 한 번 호출됩니다. `MultiHook`이 아닌 집계 hook입니다. |
+| `shutdown`          | `AsyncSeriesHook<[Compiler]>`           | <Badge text="5.110.0+" /> compiler 종료 시 child별로 한 번 호출됩니다.                |
+| `invalid`           | `SyncHook<[string \| null, number]>`    | child에서 watch 중인 파일이 변경되면 호출됩니다.                                      |
+| `run`               | `AsyncSeriesHook<[Compiler]>`           | child가 non-watch 빌드를 시작하기 전에 호출됩니다.                                    |
+| `watchRun`          | `AsyncSeriesHook<[Compiler]>`           | child가 watch 빌드를 시작하기 전에 호출됩니다.                                        |
+| `watchClose`        | `SyncHook<[]>`                          | watching이 중지되면 호출됩니다.                                                       |
+| `infrastructureLog` | `SyncBailHook<[string, string, any[]]>` | 모든 child의 infrastructure logging입니다.                                            |
+
+webpack 5.110.0부터 `done` hook에는 실제 빌드가 실행된 compiler도 설정 순서대로 전달됩니다. watch mode에서 변경은 일반적으로 일부 child만 무효화하고 나머지는 이전 stats를 보고하므로 plugin은 이를 통해 새 항목을 구분할 수 있습니다.
+
+```js
+import webpack from "webpack";
+
+const compiler = webpack([config1, config2]);
+
+compiler.hooks.done.tap("MyPlugin", (multiStats, changedCompilers) => {
+  for (const child of changedCompilers) {
+    console.log(`${child.name} rebuilt`);
+  }
+});
+```
+
+첫 빌드에서는 모든 child가 변경된 것으로 보고됩니다. 같은 릴리스에 추가된 `shutdown`을 사용하면 각 child의 [`shutdown`](/api/compiler-hooks/#shutdown)을 tap하지 않고 전체 집합에서 한 번 리소스를 해제할 수 있습니다.
+
 ## Error Handling
 
 오류를 잘 처리하려면 다음 세 가지 유형의 오류를 고려해야 합니다.

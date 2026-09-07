@@ -12,6 +12,8 @@ translators:
 
 [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin)은 webpack 번들을 제공하는 HTML 파일 생성을 단순화합니다. 이 플러그인은 매번 컴파일에 변경되는 해시로 된 파일 이름을 가진 webpack 번들에 특히 유용합니다. 플러그인이 HTML 파일을 생성하도록 하거나 [lodash 템플릿](https://lodash.com/docs#template)을 사용하여 나만의 템플릿을 제공하거나 나만의 [로더](/loaders)를 사용할 수 있습니다.
 
+T> Webpack은 5.107.0부터 HTML을 내장 지원합니다. [`experiments.html`](/configuration/experiments/#experimentshtml)과 [`output.html`](/configuration/output/#outputhtml)은 별도의 플러그인을 설치하지 않아도 이 플러그인이 제공하는 기능 대부분을 지원합니다. 기능 범위와 마이그레이션 방법은 [Native HTML](/guides/native-html/) 가이드를 참고하세요.
+
 ## Installation
 
 ```bash

@@ -518,7 +518,7 @@ export default {
 
 HTML 모듈은 [Hot Module Replacement](/concepts/hot-module-replacement/)를 지원합니다. 추가 설정이 필요하지 않습니다. HMR이 활성화되면 자동으로 활성화됩니다(예: [`devServer.hot`](/configuration/dev-server/#devserverhot)을 통해).
 
-실제 `.html` 파일로 추출된 페이지의 경우, 각 핫 업데이트는 전체 리로드를 트리거하는 대신 `document.body.innerHTML`과 `document.title`을 제자리에서 패치합니다. `<title>` 이외의 `<head>` 변경(새로운 `<meta>`, 교체된 `<link rel="icon">` 등)은 안전하게 DOM 패치할 수 없으므로 shim은 전체 페이지 리로드로 폴백합니다.
+실제 `.html` 파일로 추출된 페이지에서는 각 핫 업데이트가 전체 리로드를 트리거하는 대신 `document.body.innerHTML`과 `document.title`을 제자리에서 패치합니다. webpack 5.110.0부터는 `<head>`도 제자리에서 패치하므로, 새로운 `<meta>`, 교체된 `<link rel="icon">`, 실행되지 않은 채 제거된 `<script>`로 인해 더 이상 전체 페이지를 다시 로드하지 않습니다.
 
 T> HMR이 활성화된 동안 HTML 모듈에 대해 [모듈 연결](/configuration/optimization/#optimizationconcatenatemodules)이 비활성화됩니다. 각 모듈이 업데이트를 자체 수락하기 위해 자체 `module.hot` 스코프가 필요하기 때문입니다.
 

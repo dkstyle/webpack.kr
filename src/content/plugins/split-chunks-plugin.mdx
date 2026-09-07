@@ -48,6 +48,8 @@ Webpack은 다음 조건에 따라 자동으로 청크를 분할합니다.
 
 마지막 두 가지 조건을 충족하려고 할 때 더 큰 청크가 선호됩니다.
 
+T> 기본 요청 제한은 경험적으로 정한 안전장치이며, HTTP/1에만 해당하는 권장 사항이 아닙니다. 브라우저와 HTTP/2 같은 전송 방식은 많은 병렬 요청을 처리할 수 있지만, 청크가 늘어나면 스케줄링, 헤더, 캐시 조회, 파싱, 평가에 드는 오버헤드도 증가합니다. 애플리케이션에 더 세분화된 청크가 유리하다면 [`splitChunks.maxAsyncRequests`](#splitchunksmaxasyncrequests)와 [`splitChunks.maxInitialRequests`](#splitchunksmaxinitialrequests)를 조정한 다음, 사용자에게 미치는 결과를 측정하세요.
+
 ## Configuration
 
 Webpack은 이 기능에 대한 더 많은 제어를 원하는 개발자를 위해 옵션 세트를 제공합니다.
@@ -150,7 +152,7 @@ export default {
 };
 ```
 
-T> 이 설정을 단일 페이지 애플리케이션용 [HtmlWebpackPlugin](/plugins/html-webpack-plugin/) 또는 멀티 페이지 애플리케이션용 [ChunksWebpackPlugin](https://github.com/yoriiis/chunks-webpack-plugin?tab=readme-ov-file#chunkswebpackplugin)과 결합할 수 있습니다. 이는 생성 된 모든 vendor 청크를 주입합니다.
+T> 이 설정을 [`output.html`](/configuration/output/#outputhtml)과 함께 사용하세요. webpack이 단일 페이지 또는 엔트리별 페이지를 생성하고, 생성된 모든 vendor 청크를 자동으로 주입합니다. [Native HTML](/guides/native-html/)을 참고하세요.
 
 ### splitChunks.maxAsyncRequests
 
@@ -214,13 +216,13 @@ T> 청크가 생성되려면 `splitChunks.minSizeReduction` 과 `splitChunks.min
 
 `splitChunks.minRemainingSize`의 기본값은 [`mode`](/configuration/mode/)에 따라 달라집니다.
 
-| 모드            | 기본값                             |
-| --------------- | ---------------------------------- |
-| `"production"`  | the value of `splitChunks.minSize` |
-| `"development"` | `0`                                |
-| `"none"`        | the value of `splitChunks.minSize` |
+| 모드            | 기본값                     |
+| --------------- | -------------------------- |
+| `"production"`  | `splitChunks.minSize`의 값 |
+| `"development"` | `0`                        |
+| `"none"`        | `splitChunks.minSize`의 값 |
 
-It doesn't need to be specified manually except for the rare cases where deep control is required.
+세밀한 제어가 필요한 드문 경우를 제외하면 직접 지정할 필요가 없습니다.
 
 W> `splitChunks.minRemainingSize`는 단일 청크가 남아있을 때만 적용됩니다.
 

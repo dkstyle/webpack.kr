@@ -141,18 +141,21 @@ T> [플러그인 인터페이스](/api/plugins)를 사용하여 webpack의 기�
 **webpack.config.js**
 
 ```js
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import webpack from "webpack"; // 내장 plugin에 접근하는 데 사용
+import webpack from "webpack"; // 내장 plugin에 접근
 
 export default {
+  entry: "./src/index.html",
+  experiments: {
+    html: true,
+  },
   module: {
     rules: [{ test: /\.js$/, use: "babel-loader" }],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
+  plugins: [new webpack.ProgressPlugin()],
 };
 ```
 
-위의 예제에서 `html-webpack-plugin`은 생성된 모든 번들을 자동으로 삽입하여 애플리케이션용 HTML 파일을 생성합니다.
+위 예제에서 `ProgressPlugin`은 빌드 진행 상황의 보고 방식을 설정합니다. `src/index.html`이 엔트리이므로 webpack은 해당 파일이 참조하는 script와 style을 번들링하고 URL을 빌드된 파일 이름으로 재작성합니다. 페이지 생성에는 plugin이 필요하지 않습니다. [Native HTML](/guides/native-html/)을 참고하세요.
 
 T> webpack은 설치 없이 사용할 수 있는 많은 플러그인을 제공합니다! [plugin 목록](/plugins)을 확인해보세요.
 

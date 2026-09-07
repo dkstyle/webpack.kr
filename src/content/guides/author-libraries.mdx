@@ -345,4 +345,4 @@ W> `module` 속성은 ES2015 모듈 구문을 사용하는 스크립트를 가�
 
 이제 사용자에게 배포하기 위해 [npm 패키지로 게시하고](https://docs.npmjs.com/getting-started/publishing-npm-packages) [unpkg.com](https://unpkg.com/#/)에서 찾을 수 있습니다.
 
-T> 라이브러리와 관련된 스타일 시트를 노출하려면 [`MiniCssExtractPlugin`](/plugins/mini-css-extract-plugin)을 사용해야 합니다. 사용자는 다른 스타일 시트와 마찬가지로 이를 사용하고 로드 할 수 있습니다.
+T> 라이브러리와 관련된 스타일시트를 노출하려면 엔트리에서 CSS를 가져오고 webpack의 [내장 CSS 지원](/guides/native-css/)이 이를 추출하도록 하세요. 내보낸 `.css` 파일의 이름은 [`output.cssFilename`](/configuration/output/#outputcssfilename)에 따라 정해지며, 사용자는 다른 스타일시트와 같은 방식으로 이를 사용하고 로드할 수 있습니다.

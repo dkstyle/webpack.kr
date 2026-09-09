@@ -1,6 +1,6 @@
 ---
 title: Entry Points
-description: The ways to define the entry option, from a single file to multiple named entries with shared dependencies.
+description: webpack의 Entry Points 개념과 동작 방식을 설명합니다.
 sort: 1
 contributors:
   - TheLarkInn
@@ -26,9 +26,7 @@ translators:
 이 과정의 결과는 나중에 `output` 구성에 따라 디스크에 기록됩니다.
 `output` 구성은 번들로 묶인 파일이 어디에 어떻게 저장되는지를 제어합니다.
 
-T> When running webpack without a configuration file, the entry defaults to `'./src/index.js'`. If that file is missing — even if your `src/` directory exists — webpack will throw: <br /> **`ERROR in Entry module not found: Error: Can't resolve './src'`** <br /><br /> The error says `'./src'` rather than `'./src/index.js'` because webpack resolves the directory first, then fails to find `index.js` inside it. To use a different entry filename, configure the `entry` option as shown in the sections below.
-
-T> When running webpack without a configuration file, the entry defaults to `'./src/index.js'`. If that file is missing — even if your `src/` directory exists — webpack will throw: <br /> **`ERROR in Entry module not found: Error: Can't resolve './src'`** <br /><br /> The error says `'./src'` rather than `'./src/index.js'` because webpack resolves the directory first, then fails to find `index.js` inside it. To use a different entry filename, configure the `entry` option as shown in the sections below.
+T> 설정 파일 없이 webpack을 실행하면 entry의 기본값은 `'./src/index.js'`입니다. `src/` 디렉터리가 존재하더라도 이 파일이 없으면 webpack은 다음 오류를 표시합니다. <br /> **`ERROR in Entry module not found: Error: Can't resolve './src'`** <br /><br /> webpack이 먼저 디렉터리를 resolve한 다음 그 안에서 `index.js`를 찾지 못하기 때문에 오류에는 `'./src/index.js'` 대신 `'./src'`가 표시됩니다. 다른 entry 파일 이름을 사용하려면 아래 섹션처럼 `entry` 옵션을 설정하세요.
 
 ## Single Entry (Shorthand) Syntax
 

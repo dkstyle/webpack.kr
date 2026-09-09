@@ -1,6 +1,6 @@
 ---
 title: Plugin Patterns
-description: Common patterns for writing webpack plugins that hook into the build system.
+description: webpack에 기여할 때 필요한 Plugin Patterns 내용을 설명합니다.
 sort: 5
 contributors:
   - nveenjain
@@ -144,5 +144,5 @@ class MyPlugin {
 export default MyPlugin;
 ```
 
-T> Use `chunk.id ?? chunk.name` as the tracking key. Some chunks have an `id` but no `name`, so relying on `chunk.name` alone can miss changes.
-CSS or other non-JS chunks may not have a `javascript` key in `contentHash` — the `continue` guard skips those safely.
+T> 추적 key로 `chunk.id ?? chunk.name`을 사용하세요. 일부 chunk에는 `id`가 있지만 `name`이 없으므로 `chunk.name`에만 의존하면 변경 사항을 놓칠 수 있습니다.
+CSS 또는 기타 JavaScript가 아닌 chunk에는 `contentHash`의 `javascript` key가 없을 수 있습니다. `continue` guard는 이러한 chunk를 안전하게 건너뜁니다.

@@ -1,6 +1,6 @@
 ---
 title: ECMAScript Modules
-description: How webpack treats ECMAScript modules, including interop with CommonJS and the .mjs extension.
+description: webpack에서 ECMAScript Modules을 사용하는 방법을 설명합니다.
 sort: 19
 contributors:
   - sokra
@@ -66,7 +66,7 @@ import * as module from "./module.js";
 module.fun();
 ```
 
-When importing a namespace object from an ECMAScript Module, webpack follows the ESM convention of setting `Symbol.toStringTag` to "Module" on the namespace object.
+ECMAScript 모듈에서 namespace 객체를 가져오면 webpack은 ESM 규칙에 따라 namespace 객체의 `Symbol.toStringTag`를 `"Module"`로 설정합니다.
 
 ## Flagging modules as ESM
 

@@ -1,6 +1,6 @@
 ---
 title: Module Federation
-description: Let separately built applications share modules at runtime and behave as a single application.
+description: webpack의 Module Federation 개념과 동작 방식을 설명합니다.
 sort: 8
 contributors:
   - sokra
@@ -35,7 +35,7 @@ related:
 
 <StackBlitzPreview
   example="module-federation?terminal=start&terminal="
-  description="Check out this live module federation example on StackBlitz."
+  description="StackBlitz에서 실행되는 module federation 예제를 확인해 보세요."
 />
 
 ## Low-level concepts
@@ -418,4 +418,4 @@ export default {
 };
 ```
 
-The value can be any string, as long as it is unique across every federated build loaded on a given page.
+주어진 페이지에 로드된 모든 federated build에서 고유하다면 어떤 문자열이든 사용할 수 있습니다.

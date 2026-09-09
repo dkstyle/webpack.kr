@@ -1,6 +1,6 @@
 ---
 title: Writer's Guide
-description: Formatting and style conventions for editing content on the webpack documentation site.
+description: webpack에 기여할 때 필요한 My Article 내용을 설명합니다.
 sort: 1
 contributors:
   - pranshuchittora
@@ -215,7 +215,7 @@ W> 이것은 Warning입니다.
 
 `string: 'natural' | 'named' | 'deterministic'`
 
-The default value of `configuration.example.option` depends on the [`mode`](/configuration/mode/):
+`configuration.example.option`의 기본값은 [`mode`](/configuration/mode/)에 따라 달라집니다.
 
 | 모드            | 기본값            |
 | --------------- | ----------------- |
@@ -223,13 +223,13 @@ The default value of `configuration.example.option` depends on the [`mode`](/con
 | `"development"` | `'named'`         |
 | `"none"`        | `'natural'`       |
 
-If an option has a boolean default that varies by mode:
+옵션의 boolean 기본값이 mode에 따라 달라지는 경우:
 
 **configuration.example.flag**
 
 `boolean`
 
-The default value of `configuration.example.flag` depends on the [`mode`](/configuration/mode/):
+`configuration.example.flag`의 기본값은 [`mode`](/configuration/mode/)에 따라 달라집니다.
 
 | 모드            | 기본값  |
 | --------------- | ------- |
@@ -237,7 +237,7 @@ The default value of `configuration.example.flag` depends on the [`mode`](/confi
 | `"development"` | `false` |
 | `"none"`        | `false` |
 
-If the object's key is dynamic, user-defined, use `<key>` to describe it:
+객체의 key가 동적이고 사용자가 정의하는 값이라면 `<key>`로 표현하세요.
 
 `object = { <key> string }`
 

@@ -1,9 +1,11 @@
 ---
 title: CopyPlugin
-description: Copy files and directories into output.path as part of the build.
+description: 빌드 과정에서 파일과 디렉터리를 output.path로 복사합니다.
 group: webpack
 contributors:
   - alexander-akait
+translators:
+  - dkstyle
 related:
   - title: output.copy
     url: /configuration/output/#outputcopy
@@ -11,7 +13,7 @@ related:
     url: https://github.com/webpack/webpack/tree/main/examples/output-copy
 ---
 
-Copies files and directories into [`output.path`](/configuration/output/#outputpath) as part of the build. This is the plugin behind [`output.copy`](/configuration/output/#outputcopy), and webpack applies it for you when that option is set — reach for the plugin directly when you need one of the two options `output.copy` does not carry, `concurrency` and `stage`.
+빌드 과정에서 파일과 디렉터리를 [`output.path`](/configuration/output/#outputpath)로 복사합니다. 이 plugin은 [`output.copy`](/configuration/output/#outputcopy)의 기반이며, 해당 옵션을 설정하면 webpack이 자동으로 적용합니다. `output.copy`에서 제공하지 않는 `concurrency` 또는 `stage` 옵션이 필요할 때 plugin을 직접 사용하세요.
 
 <Badge text="5.111.0+" />
 
@@ -21,21 +23,21 @@ import webpack from "webpack";
 new webpack.CopyPlugin(options);
 ```
 
-T> It supersedes [`copy-webpack-plugin`](/plugins/copy-webpack-plugin/), which is deprecated in its favour.
+T> 이 plugin은 [`copy-webpack-plugin`](/plugins/copy-webpack-plugin/)을 대체하며, `copy-webpack-plugin`은 이 plugin을 권장하면서 deprecated 되었습니다.
 
 ## Options
 
 ```ts
 {
-  patterns: (string | object)[], // what is copied, see output.copy
-  concurrency?: number, // how many files are read at the same time
-  stage?: number, // the processAssets stage the files are copied at
+  patterns: (string | object)[], // 복사할 항목, output.copy 참고
+  concurrency?: number, // 동시에 읽을 파일 수
+  stage?: number, // 파일을 복사할 processAssets 단계
 }
 ```
 
-- `patterns` (`(string | object)[]`): the files to copy. A pattern is a `from` plus `context`, `filename`, `globOptions`, `info`, `preservePermissions`, `preserveTimestamps`, `to` and `transform` — all documented under [`output.copy`](/configuration/output/#outputcopy), which takes the same patterns.
-- `concurrency` (`number = 100`): the maximum number of files read at the same time.
-- `stage` (`number = webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL`): the [`processAssets`](/api/compilation-hooks/#processassets) stage the files are copied at. At the default stage a copied file is minimized and compressed like every other asset; a later stage emits it after the taps that would have done so.
+- `patterns` (`(string | object)[]`): 복사할 파일입니다. 패턴은 `from`과 `context`, `filename`, `globOptions`, `info`, `preservePermissions`, `preserveTimestamps`, `to`, `transform`으로 구성됩니다. 동일한 패턴을 사용하는 [`output.copy`](/configuration/output/#outputcopy)에서 모두 설명합니다.
+- `concurrency` (`number = 100`): 동시에 읽을 수 있는 최대 파일 수입니다.
+- `stage` (`number = webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL`): 파일을 복사할 [`processAssets`](/api/compilation-hooks/#processassets) 단계입니다. 기본 단계에서는 복사된 파일도 다른 애셋과 마찬가지로 최소화되고 압축됩니다. 이후 단계를 지정하면 이러한 작업을 수행할 tap이 끝난 뒤 파일을 emit합니다.
 
 ## Usage
 
@@ -59,7 +61,7 @@ export default {
 
 ### Keeping a file out of the minimizer
 
-A prebuilt file is already minimized, and running the minimizer over it again costs time for nothing. Mark it as minimized in its [asset info](/api/stats/#asset-objects) and the minimizer leaves it alone:
+미리 빌드된 파일은 이미 최소화되어 있으므로 minimizer를 다시 실행하면 불필요하게 시간만 소요됩니다. [asset info](/api/stats/#asset-objects)에 최소화된 파일이라고 표시하면 minimizer가 해당 파일을 건너뜁니다.
 
 ```js
 import webpack from "webpack";
@@ -81,11 +83,11 @@ export default {
 };
 ```
 
-W> A later `stage` is not how a file is kept out of the minimizer. Minimizers tap `processAssets` with `additionalAssets`, so they run again for assets added at any later stage; `info: { minimized: true }` is what tells them to skip one.
+W> 이후의 `stage`를 지정하는 것만으로는 파일을 minimizer에서 제외할 수 없습니다. Minimizer는 `additionalAssets`를 사용해 `processAssets`를 tap하므로 이후 단계에 추가된 애셋에도 다시 실행됩니다. `info: { minimized: true }`를 지정해야 minimizer가 해당 파일을 건너뜁니다.
 
 ### Merging copied assets
 
-One source file becomes one asset, so combining several into one is a second pass over what the copy emitted — which any plugin can do. Copied assets carry `copied: true` in their asset info, which is how you pick them out:
+하나의 소스 파일은 하나의 애셋이 되므로 여러 파일을 하나로 합치려면 복사된 결과물을 다시 처리해야 합니다. 이 작업은 어떤 plugin으로도 수행할 수 있습니다. 복사된 애셋의 asset info에는 `copied: true`가 포함되므로 다음과 같이 대상을 선별할 수 있습니다.
 
 ```js
 compilation.hooks.processAssets.tap(
@@ -114,4 +116,4 @@ compilation.hooks.processAssets.tap(
 );
 ```
 
-T> The [`output-copy` example](https://github.com/webpack/webpack/tree/main/examples/output-copy) carries this plugin in full, caching included, alongside a configuration exercising every pattern option.
+T> [`output-copy` 예제](https://github.com/webpack/webpack/tree/main/examples/output-copy)에는 캐싱을 포함한 이 plugin의 전체 구현과 모든 패턴 옵션을 사용하는 설정이 담겨 있습니다.

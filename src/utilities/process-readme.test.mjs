@@ -18,17 +18,57 @@ describe("processReadme", () => {
     );
   });
 
+  it("keeps the github link when the site builds no page for the package", () => {
+    const options = {
+      source: url,
+      loaders: ["webpack/postcss-loader"],
+      plugins: ["webpack/stylelint-webpack-plugin"],
+    };
+    const renamedPluginMDData =
+      "- [lint-webpack-plugin](https://github.com/webpack/lint-webpack-plugin)";
+    const renamedLoaderMDData =
+      "- [sass-loader](https://github.com/webpack/sass-loader)";
+
+    expect(processReadme(renamedPluginMDData, options)).toBe(
+      renamedPluginMDData,
+    );
+    expect(processReadme(renamedLoaderMDData, options)).toBe(
+      renamedLoaderMDData,
+    );
+  });
+
+  it("links a package the site has a page for under its current owner", () => {
+    const options = {
+      source: url,
+      loaders: ["webpack/postcss-loader"],
+      plugins: ["webpack/copy-webpack-plugin"],
+    };
+
+    expect(
+      processReadme(
+        "- [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin)",
+        options,
+      ),
+    ).toBe("- [copy-webpack-plugin](/plugins/copy-webpack-plugin/)");
+    expect(
+      processReadme(
+        "- [postcss-loader](https://github.com/webpack/postcss-loader)",
+        options,
+      ),
+    ).toBe("- [postcss-loader](/loaders/postcss-loader/)");
+  });
+
   it("links without the site", () => {
     const options = { source: url };
     const loaderMDData =
       "- [extract-loader](https://github.com/peerigon/extract-loader)";
     const pluginMDData =
-      "- [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)";
+      "- [dotenv-webpack](https://github.com/mrsteele/dotenv-webpack)";
     expect(processReadme(loaderMDData, options)).toBe(
       "- [extract-loader](https://github.com/peerigon/extract-loader)",
     );
     expect(processReadme(pluginMDData, options)).toBe(
-      "- [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)",
+      "- [dotenv-webpack](https://github.com/mrsteele/dotenv-webpack)",
     );
   });
 

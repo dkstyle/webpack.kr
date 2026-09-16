@@ -82,15 +82,49 @@ export default {
 
 T> 전체 검사를 한 번에 활성화하면 프로젝트를 점검하기 좋지만 일부 검사는 모듈 그래프를 순회하여 빌드 시간이 늘어납니다. 보고서를 확인한 뒤 필요한 검사만 활성화하고 나머지는 비활성화하세요.
 
-### performance.assetFilter
+### performance.analyzableBailouts
 
-`function(assetFilename) => boolean`
+<Badge text="5.111.0+" />
 
-이 속성을 통해 webpack은 성능 힌트를 계산하는 데 사용되는 파일을 제어할 수 있습니다. 기본 기능은 다음과 같습니다.
+`boolean = false`
+
+[`output.module`](/configuration/output/#outputmodule) 빌드에서 webpack의 런타임 형식을 유지한 참조를 보고하며, 각 참조가 리터럴 `import()` 또는 `new URL()`로 작성되지 못한 이유를 명시합니다. 이유는 모듈별로 나열하는 대신 그룹화하여 집계하며, ESM 출력 외부에서는 분석 가능하다고 주장하는 것이 없으므로 검사가 조용히 진행됩니다.
+
+ESM 빌드는 일반적으로 각 청크와 애셋의 이름을 명시적으로 지정하므로, 다른 번들러, CDN의 모듈 프리로더 또는 import-map 생성기가 webpack 런타임을 실행하지 않고도 참조를 따라갈 수 있습니다. 무언가가 이를 방지하면 webpack은 `__webpack_require__.e(id)` 또는 `__webpack_require__.p`로 구성된 URL로 폴백하는데, 이는 정확하지만 webpack 외에는 불투명합니다. 이 검사 이전에는 그 폴백이 기본적으로 아무것도 표시하지 않는 `stats.optimizationBailout`을 통해서만 보고되었습니다.
+
+각 이유의 의미와 해결 방법:
+
+| 이유                                                                               | 변경 사항                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`output.chunkFormat`](/configuration/output/#outputchunkformat)이 `module`이 아님 | 청크가 네이티브 `import()`를 통해 전혀 읽히지 않습니다. `"module"`으로 설정하세요.                                                                                                      |
+| [`output.importFunctionName`](/configuration/output/#outputimportfunctionname)     | 호출 사이트가 `import()` 대신 명명된 함수입니다. `"import"`로 유지하세요.                                                                                                               |
+| worker가 `import` 이외의 것으로 청크를 로드함                                      | [`output.workerChunkLoading`](/configuration/output/#outputworkerchunkloading)을 `"import"`로 설정하거나 엔트리의 `chunkLoading`을 동일하게 설정하세요.                                 |
+| [`devtool`](/configuration/devtool/)이 모듈을 `eval()`로 감쌈                      | `import.meta`는 거기서 파싱되지 않으며, `eval()` 문자열 내에 작성된 지정자는 webpack이 작성하더라도 렉서에 보이지 않습니다. 출력이 분석 가능해야 할 때는 비`eval` devtool을 사용하세요. |
+| `__webpack_public_path__`가 재할당됨                                               | 경로는 런타임에만 알 수 있으므로 리터럴을 쓸 수 없습니다. 대신 [`output.publicPath`](/configuration/output/#outputpublicpath)를 설정하세요.                                             |
+| [`output.publicPath`](/configuration/output/#outputpublicpath)가 기준이 필요함     | 상대 공개 경로는 각 청크에서 다르게 읽힙니다. 루트 절대 또는 절대 경로나 `"auto"`는 어디서나 동일하게 읽힙니다.                                                                         |
+| 엔트리의 `baseUri`가 일치하지 않거나 절대 경로가 아님                              | 모듈을 공유하는 엔트리에 동일한 절대 `baseUri`를 지정하세요.                                                                                                                            |
+| 핫 업데이트가 이름을 변경할 수 있음                                                | [HMR](/concepts/hot-module-replacement/)이 켜진 동안에만 해당됩니다. 프로덕션 출력에는 영향이 없습니다.                                                                                 |
 
 ```js
-function assetFilter(assetFilename) {
-  return !/\.map$/.test(assetFilename);
+export default {
+  // ...
+  output: { module: true },
+  performance: {
+    hints: "warning",
+    analyzableBailouts: true,
+  },
+};
+```
+
+### performance.assetFilter
+
+`(assetFilename: string, source: Source, assetInfo: AssetInfo) => boolean`
+
+이 속성을 통해 webpack은 성능 힌트를 계산하는 데 사용되는 파일을 제어할 수 있습니다. 기본 함수는 소스맵처럼 `assetInfo.development` 플래그가 설정된 애셋을 제외합니다.
+
+```js
+function assetFilter(assetFilename, source, assetInfo) {
+  return !assetInfo.development;
 }
 ```
 
@@ -203,7 +237,7 @@ export를 정적으로 읽을 수 없는 모듈(예: 조건문 안에서 `module
 
 ### performance.hints
 
-`string: 'error' | 'warning' | 'stats'` `boolean: false`
+`'error' | 'warning' | 'stats'` `false`
 
 힌트를 켜거나 끕니다. 또한 힌트가 발견되면 webpack에 오류나 경고를 표시하도록 합니다.
 
@@ -435,25 +469,9 @@ ES module 최상위에서 `this`를 읽는 모듈을 보고합니다. 이 위치
 
 `boolean = false`
 
-어떤 빌드에서도 사용하지 않은 설정을 보고합니다. 아무 요청과도 일치하지 않은 [`resolve.alias`](/configuration/resolve/#resolvealias) 항목, 참조되지 않은 [`DefinePlugin`](/plugins/define-plugin/) key, 가져오지 않은 [`externals`](/configuration/externals/), 한 번도 일치하지 않은 [`module.rules`](/configuration/module/#modulerules), 가져오지 않은 [Module Federation](/concepts/module-federation/)의 `shared` key 또는 `remotes`가 해당합니다. 각 발견 항목은 고유한 메시지를 유지하므로 보고서에서 다섯 가지 중 어느 항목인지 확인할 수 있습니다.
+어떤 빌드에서도 사용하지 않은 설정을 보고합니다. 아무 요청과도 일치하지 않은 [`resolve.alias`](/configuration/resolve/#resolvealias) 항목, 참조되지 않은 [`DefinePlugin`](/plugins/define-plugin/) key, 가져오지 않은 [`externals`](/configuration/externals/), 한 번도 일치하지 않은 [`module.rules`](/configuration/module/#modulerules)가 해당합니다. 각 발견 항목은 고유한 메시지를 유지하므로 보고서에서 네 가지 중 어느 항목인지 확인할 수 있습니다.
 
 철자가 틀린 external은 실제 요청이 대신 번들링되고 크기 제한으로도 원인을 설명할 수 없어 특히 큰 비용을 유발합니다. Plugin도 규칙을 추가하므로 보고된 규칙이 반드시 사용자가 작성한 것은 아닙니다.
-
-아무것도 가져오지 않는 `shared` key는 발견하기 어렵습니다. 정확한 key는 정확히 같은 요청에만 일치하므로 `import debounce from 'lodash/debounce'`를 사용하는 경우 `shared: { lodash: {} }`는 아무것도 공유하지 않지만 빌드는 여전히 성공합니다. key 끝에 슬래시를 추가하면 그 아래의 모든 항목을 공유할 수 있습니다.
-
-```js
-export default {
-  // ...
-  plugins: [
-    new ModuleFederationPlugin({
-      name: "host",
-      shared: {
-        "lodash/": { singleton: true },
-      },
-    }),
-  ],
-};
-```
 
 ### performance.unusedModules
 

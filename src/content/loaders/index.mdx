@@ -52,7 +52,7 @@ Loader는 webpack 기능을 확장하는 별도 패키지이며 더 넓은 생�
 
 ## Templating
 
-T> HTML은 실험적인 [`experiments.html`](/configuration/experiments/#experimentshtml)로 내장 지원하므로 `html-loader`를 이 목록에 포함하지 않습니다. 내장 기능이 지원하지 않는 항목을 위해 [문서](/loaders/html-loader)는 유지됩니다. [What's built-in](/guides/native-html/#whats-built-in)을 참고하세요. template engine에는 항상 해당 loader가 필요합니다.
+T> HTML은 실험적인 [`experiments.html`](/configuration/experiments/#experimentshtml)로 내장 지원하므로 일반 HTML에 대한 로더는 이 목록에 포함하지 않습니다. [Native HTML](/guides/native-html/) 가이드에서 [내장 기능](/guides/native-html/#whats-built-in)과 기존 설정을 이전하는 방법을 설명합니다. template engine에는 항상 해당 로더가 필요합니다.
 
 - [`pug-loader`](https://github.com/pugjs/pug-loader)는 Pug 및 Jade template을 로드하고 함수를 반환합니다.
 - [`markdown-loader`](https://github.com/peerigon/markdown-loader)는 Markdown을 HTML로 컴파일합니다.
@@ -61,7 +61,6 @@ T> HTML은 실험적인 [`experiments.html`](/configuration/experiments/#experim
 - [`handlebars-loader`](https://github.com/pcardune/handlebars-loader)는 Handlebars를 HTML로 컴파일합니다.
 - [`markup-inline-loader`](https://github.com/asnowwolf/markup-inline-loader)는 SVG/MathML 파일을 HTML에 인라인으로 삽입합니다. icon font 또는 SVG에 CSS animation을 적용할 때 유용합니다.
 - [`twig-loader`](https://github.com/zimmo-be/twig-loader)는 Twig template을 컴파일하고 함수를 반환합니다.
-- [`remark-loader`](https://github.com/webpack/remark-loader)는 내장 이미지 리졸브와 함께 `remark`로 Markdown을 로드합니다.
 
 ## Styling
 

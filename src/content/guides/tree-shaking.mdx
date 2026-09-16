@@ -120,25 +120,31 @@ export default {
 
 우리는 `src/math.js` 모듈에서 **`square` 메소드를 `가져오지` 않았습니다**. 이 함수는 "사용하지 않는 코드"로 알려져 있고, 사용하지 않아 삭제되어야 하는 `export`를 의미합니다. 이제 npm 스크립트인 `npm run build`를 실행하여 출력된 번들을 살펴보겠습니다.
 
-**dist/bundle.js (around lines 90 - 100)**
+**dist/bundle.js (around lines 5 - 25)**
 
-{/* eslint-disable no-use-before-define */}
+{/* eslint-skip */}
 
 ```js
-/* 1 */
-/***/ (function (module, __webpack_exports__, __webpack_require__) {
-  "use strict";
+/***/ "./src/math.js"
+/*!*********************!*\
+  !*** ./src/math.js ***!
+  \*********************/
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
-  /* unused harmony export square */
-  /* harmony export (immutable) */ __webpack_exports__.a = cube;
-  function square(x) {
-    return x * x;
-  }
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   cube: () => (/* binding */ cube)
+/* harmony export */ });
+/* unused harmony export square */
+function square(x) {
+  return x * x;
+}
 
-  function cube(x) {
-    return x * x * x;
-  }
-});
+function cube(x) {
+  return x * x * x;
+}
+
+
+/***/ }
 ```
 
 위의 `unused harmony export square` 주석을 참고하세요. 아래 코드를 보면 `square`를 가져오지 않지만, 여전히 번들에 포함되어 있습니다. 다음 섹션에서 수정해 보겠습니다.
@@ -578,7 +584,7 @@ export default {
 };
 ```
 
-T> `--optimize-minimize` 플래그를 사용하여 `TerserPlugin`도 활성화 할 수 있습니다.
+T> `--optimization-minimize` 플래그를 사용하여 `TerserPlugin`도 활성화할 수 있습니다.
 
 즉, 다른 `npm run build`를 실행하고 변경된 사항이 있는지 볼 수 있습니다.
 

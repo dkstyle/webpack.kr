@@ -71,6 +71,8 @@ export default {
 };
 ```
 
+T> Some dependencies ship syntax your target browsers cannot parse, and those do have to go through the loader. Add them to `include` one by one instead of transforming all of `node_modules` — see [dependencies that ship modern syntax](/guides/ecma-script-modules/#dependencies-that-ship-modern-syntax).
+
 ### Bootstrap
 
 각각의 추가 로더/플러그인에는 부팅 시간이 있습니다. 가능한 한 도구를 적게 사용하세요.

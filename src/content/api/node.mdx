@@ -290,7 +290,7 @@ W> 다중 설정은 기본적으로 **병렬로 실행됩니다**(`parallelism: 
 | ------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `done`              | `SyncHook<[MultiStats, Compiler[]]>`    | 모든 child compilation이 끝나면 한 번 호출됩니다. 집계 훅으로, `MultiHook`이 아닙니다.                                                 |                                                          |
 | `shutdown`          | `AsyncSeriesHook<[]>`                   | <Badge text="5.110.0+" /> 컴파일러가 종료될 때 호출됩니다. children의 `shutdown` 훅에 대한 `MultiHook`으로, 탭은 인수를 받지 않습니다. |                                                          |
-| `invalid`           | `SyncHook<[string \                     | null, number]>`                                                                                                                        | 감시 중인 파일이 child 중 하나에서 변경될 때 호출됩니다. |
+| `invalid`           | `SyncHook<[string \| null, number]>`                                                                                                                        | 감시 중인 파일이 child 중 하나에서 변경될 때 호출됩니다. |
 | `run`               | `AsyncSeriesHook<[Compiler]>`           | child가 non-watch 빌드를 시작하기 전에 호출됩니다.                                                                                     |                                                          |
 | `watchRun`          | `AsyncSeriesHook<[Compiler]>`           | child가 watch 빌드를 시작하기 전에 호출됩니다.                                                                                         |                                                          |
 | `watchClose`        | `SyncHook<[]>`                          | watching이 중지되면 호출됩니다.                                                                                                        |                                                          |
@@ -368,9 +368,7 @@ import { Volume, createFsFromVolume } from "memfs";
 import webpack from "webpack";
 
 const fs = createFsFromVolume(new Volume());
-const compiler = webpack({
-  /* 옵션 */
-});
+const compiler = webpack({/* 옵션 */});
 
 compiler.outputFileSystem = fs;
 compiler.run((err, stats) => {

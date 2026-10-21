@@ -40,6 +40,28 @@ See the `package.json` for the full list of `scripts`.
 >
 > **Node v20.9.0** or above is required for the build process to run properly.
 
+## Updating the sponsors image
+
+README에는 [SponsorKit](https://github.com/antfu-collective/sponsorkit)으로 생성한 SVG 이미지를 사용합니다.
+`npm run build`는 후원자 데이터를 다운로드한 후 이미지를 자동으로 생성합니다.
+빌드 과정에서 이미지를 `dist/assets/sponsors.svg`로 복사하며, README는
+`https://webpack.kr/assets/sponsors.svg`에서 이미지를 불러오므로 배포할 때마다 갱신됩니다.
+
+웹사이트를 빌드하지 않고 이미지만 다시 생성하려면 다음 명령을 실행하세요.
+
+```bash
+npm run sponsors
+```
+
+이 명령은 `fetch:supporters`로 webpack의 공개 Open Collective 데이터를 다운로드한 뒤
+`src/assets/sponsors.svg`를 생성합니다. 후원 등급은 웹사이트와 마찬가지로 지난 1년간의
+월평균 기여액을 기준으로 하며, 월 $1부터 시작합니다. API 키는 필요하지 않지만,
+기존 `OPENCOLLECTIVE_API_KEY` 환경 변수를 설정하면 더 높은 요청 한도를 사용할 수 있습니다.
+
+빌드 과정처럼 이미 다운로드한 데이터로 이미지를 생성하려면 `npm run sponsors:generate`를
+사용하세요. 이미지 레이아웃은 `sponsorkit.config.mjs`에서 조정할 수 있습니다.
+생성된 SVG, 다운로드한 데이터, SponsorKit 캐시는 Git 추적에서 제외됩니다.
+
 ## Contributor License Agreement
 
 When submitting your contribution, a CLA (Contributor License Agreement) bot will come by

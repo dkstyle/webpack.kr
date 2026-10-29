@@ -2193,6 +2193,8 @@ export default {
 
 `application/json`, `text/javascript`, `application/javascript`, `application/node` 및 `application/wasm`은 이미 기본적인 mimetype으로 포함되어 있습니다.
 
+[`experiments.html`](/configuration/experiments/#experimentshtml)을 활성화하면 인라인 `<style lang>`/`<script lang>` 본문은 해당 언어의 파일과 같은 타입(`text/x-scss`, `text/less`, `text/typescript` 등)의 `data:` 모듈이 됩니다. 따라서 `mimetype`으로 해당 본문에 적용할 로더를 등록할 수 있습니다. [Preprocessors in inline `<style>` and `<script>`](/guides/native-html/#preprocessors-in-inline-style-and-script)를 참고하세요.
+
 ## Rule.oneOf
 
 Rule이 일치할 때 첫 번째 일치하는 Rule만 사용되는 [`Rules`](#rule)의 배열입니다.

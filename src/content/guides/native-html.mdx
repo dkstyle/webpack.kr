@@ -130,21 +130,22 @@ document.querySelector("#app").innerHTML = page;
 
 기본적으로 parser는 알려진 URL 포함 속성을 의존성으로 처리합니다. 다음 항목은 별도 설정 없이 처리됩니다.
 
-| 마크업                                           | 동작                                                                              |
-| ------------------------------------------------ | --------------------------------------------------------------------------------- |
-| `<script src>`                                   | classic 청크 엔트리가 되며 `src`는 내보낸 청크를 가리키도록 재작성됩니다.         |
-| `<script type="module" src>`                     | ES module 청크 엔트리가 됩니다.                                                   |
-| `<script>…</script>` (inline)                    | 본문이 자체 엔트리가 되고 태그는 `<script src>`로 재작성됩니다.                   |
-| `<style>…</style>` (inline)                      | CSS 파이프라인을 거치며 `@import`/`url()`을 리졸브한 텍스트를 다시 기록합니다.    |
-| `style="…"` 속성                                 | declaration 목록으로 CSS 파이프라인을 거칩니다.                                   |
-| `<link rel="stylesheet">`                        | CSS 청크 엔트리가 됩니다.                                                         |
-| `<link rel="modulepreload">`                     | 독립 엔트리가 됩니다(미리 로드되며 sibling에서 실행되지 않음).                    |
-| `<link rel="preload">` / `<link rel="prefetch">` | script/style을 번들링하고 `href`를 재작성합니다.                                  |
-| `<link rel="icon">`, `<link rel="manifest">`     | hash 애셋으로 내보내며 manifest의 `icons`/`screenshots`/`shortcuts`도 처리합니다. |
-| `<img src>`, `<img srcset>`, `<source srcset>`   | hash 애셋으로 내보냅니다.                                                         |
-| `<iframe srcdoc>`                                | 내부 문서를 HTML 파이프라인으로 번들링합니다.                                     |
-| SVG 참조(`fill`, `cursor`, `font-face-uri`, …)   | `url(...)` 대상을 애셋으로 내보냅니다.                                            |
-| `<meta name="twitter:player:stream">`            | hash 애셋으로 내보냅니다.                                                         |
+| 마크업                                           | 동작                                                                                                |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `<script src>`                                   | classic 청크 엔트리가 되며 `src`는 내보낸 청크를 가리키도록 재작성됩니다.                           |
+| `<script type="module" src>`                     | ES module 청크 엔트리가 됩니다.                                                                     |
+| `<script>…</script>` (inline)                    | 본문이 자체 엔트리가 되고 태그는 `<script src>`로 재작성됩니다.                                     |
+| `<style>…</style>` (inline)                      | CSS 파이프라인을 거치며 `@import`/`url()`을 리졸브한 텍스트를 다시 기록합니다.                      |
+| `<style lang>`, `<script lang>` (inline)         | 해당 [언어의 규칙](#preprocessors-in-inline-style-and-script)을 적용한 뒤 위와 동일하게 처리합니다. |
+| `style="…"` 속성                                 | declaration 목록으로 CSS 파이프라인을 거칩니다.                                                     |
+| `<link rel="stylesheet">`                        | CSS 청크 엔트리가 됩니다.                                                                           |
+| `<link rel="modulepreload">`                     | 독립 엔트리가 됩니다(미리 로드되며 sibling에서 실행되지 않음).                                      |
+| `<link rel="preload">` / `<link rel="prefetch">` | script/style을 번들링하고 `href`를 재작성합니다.                                                    |
+| `<link rel="icon">`, `<link rel="manifest">`     | hash 애셋으로 내보내며 manifest의 `icons`/`screenshots`/`shortcuts`도 처리합니다.                   |
+| `<img src>`, `<img srcset>`, `<source srcset>`   | hash 애셋으로 내보냅니다.                                                                           |
+| `<iframe srcdoc>`                                | 내부 문서를 HTML 파이프라인으로 번들링합니다.                                                       |
+| SVG 참조(`fill`, `cursor`, `font-face-uri`, …)   | `url(...)` 대상을 애셋으로 내보냅니다.                                                              |
+| `<meta name="twitter:player:stream">`            | hash 애셋으로 내보냅니다.                                                                           |
 
 다음 두 규칙으로 JavaScript 측의 동작을 예측할 수 있습니다.
 
@@ -152,6 +153,71 @@ document.querySelector("#app").innerHTML = page;
 - [`output.module`](/configuration/output/#outputmodule)을 활성화하면 classic `<script>` 태그가 자동으로 `type="module"`로 변경되어 내보낸 ES module 청크가 올바른 모드로 로드됩니다.
 
 JS가 아닌 script 타입(`application/ld+json`, `importmap` 등), data URI, CSS가 아닌 `type`을 가진 `<style>`은 변경하지 않고 그대로 전달합니다.
+
+### Preprocessors in inline `<style>` and `<script>`
+
+인라인 본문의 `lang`에 다른 언어를 지정하면 해당 언어의 파일과 같은 타입의 `data:` 모듈로 모듈 그래프에 포함됩니다. 따라서 [`Rule.mimetype`](/configuration/module/#rulemimetype) 규칙의 로더는 해당 본문에만 적용되며, 페이지의 다른 `<style>`이나 `<script>`에는 적용되지 않습니다.
+
+| `lang`               | Mimetype                                     |
+| -------------------- | -------------------------------------------- |
+| 미지정, `css` / `js` | 기존과 동일한 `text/css` / `text/javascript` |
+| `scss`, `sass`       | `text/x-scss`, `text/x-sass`                 |
+| `less`               | `text/less`                                  |
+| `styl`, `stylus`     | `text/stylus`                                |
+| `ts`, `mts`, `cts`   | `text/typescript`                            |
+| 그 외(`postcss` 등)  | `text/x-<lang>`(예: `text/x-postcss`)        |
+
+**page.html**
+
+```html
+<style lang="scss">
+  $accent: rebeccapurple;
+  .button {
+    color: $accent;
+    &:hover {
+      background: url("./hover.png");
+    }
+  }
+</style>
+<script lang="ts">
+  import { greet } from "./greet.ts";
+  const name: string = "webpack";
+  greet(name);
+</script>
+```
+
+**webpack.config.js**
+
+```js
+export default {
+  entry: "./page.html",
+  experiments: { html: true, css: true },
+  module: {
+    rules: [
+      { mimetype: "text/x-scss", use: "sass-loader" },
+      { mimetype: "text/less", use: "less-loader" },
+    ],
+  },
+};
+```
+
+[`experiments.typescript`](/configuration/experiments/#experimentstypescript)가 `text/typescript`을 처리하면 `<script lang="ts">`에 별도 규칙이 필요하지 않습니다. Node.js 22.6 이상에서는 `.ts` 파일을 처리하는 규칙이 없을 때 기본적으로 이 기능이 적용됩니다. 그 외에는 `{ mimetype: "text/typescript", use: "ts-loader" }`와 같이 로더를 등록하세요. 컴파일된 CSS는 다른 `<style>`과 마찬가지로 CSS 파이프라인을 거치므로 `url()`은 페이지를 기준으로 리졸브됩니다. 일치하는 규칙이 없는 본문은 기존처럼 CSS나 JavaScript로 읽습니다.
+
+webpack이 미디어 타입을 알 수 없는 `lang`에는 `text/x-<lang>` 타입을 지정합니다. `x-`는 등록되지 않은 하위 타입을 나타내므로 webpack이 이미 처리하는 타입(`text/javascript`, `text/css`, `text/html`)과 충돌하지 않습니다. 공백이나 기호 등으로 인해 미디어 타입으로 사용할 수 없는 `lang`은 본문을 일반 CSS나 JavaScript로 유지합니다.
+
+문자열 `mimetype` 조건은 접두사로 일치 여부를 확인하므로 `"text/x-scss"`는 `lang="scss2"`에도 일치합니다. 정확히 하나의 언어만 일치시키려면 정규 표현식을 사용하세요.
+
+```js
+export default {
+  module: {
+    rules: [{ mimetype: /^text\/x-postcss$/, use: "postcss-loader" }],
+  },
+};
+```
+
+W> `data:` 모듈에는 파일 경로가 없습니다. 로더의 `this.context`는 페이지의 디렉터리를 가리키지만, 현재 `sass-loader`, `less-loader`, `stylus-loader`처럼 `this.resourcePath`를 기준으로 파일을 찾는 로더는 인라인 본문의 상대 경로 `@use`/`@import`를 리졸브할 수 없습니다. 또한 `sass-loader`는 들여쓰기 문법을 사용하도록 옵션을 지정하지 않으면 `lang="sass"`를 SCSS로 읽습니다. 부분 파일을 가져오는 스타일은 별도 스타일시트 파일에 작성하세요.
+
+`<style type="text/less">`와 `<script type="text/typescript">`는 계속 변경 없이 전달됩니다. 본문에 로더를 적용하려면 `lang`을 지정해야 합니다.
 
 ### Skipping a single URL
 
@@ -161,6 +227,26 @@ JS가 아닌 script 타입(`application/ld+json`, `importmap` 등), data URI, CS
 <!-- webpackIgnore: true -->
 <script src="https://cdn.example.com/analytics.js"></script>
 ```
+
+### Pages with a `<base href>`
+
+문서의 첫 번째 `<base href>`는 그 뒤에 나오는 상대 URL의 번들링 방식을 변경합니다.
+
+| `<base href>`                                             | 뒤에 나오는 상대 URL의 처리 방식                                                               |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 상대 경로(`assets/`)                                      | base를 기준으로 리졸브되며(`assets/logo.png`) 계속 번들링됩니다.                               |
+| 루트 상대 경로(`/`, `/app/`)                              | 페이지가 속한 디렉터리를 제공하는 URL로 취급하므로 base가 없는 것처럼 리졸브하고 번들링합니다. |
+| 절대 URL 또는 프로토콜 상대 URL(`https://cdn/`, `//cdn/`) | 빌드 외부를 가리키므로 변경하지 않습니다.                                                      |
+
+따라서 `html-webpack-plugin` template에서 복사한 `<base href="/">`는 변경할 필요가 없습니다. base가 다른 origin을 가리키는 페이지의 URL을 계속 번들링하려면 `<base>` 태그 바로 앞에 `webpackIgnore` 주석을 추가하세요. 브라우저는 여전히 이 태그를 따르므로 내보낸 URL은 해당 origin을 기준으로 리졸브됩니다.
+
+```html
+<!-- webpackIgnore: true -->
+<base href="https://cdn.example.com/" />
+<script src="./src/index.js"></script>
+```
+
+T> webpack 5.113.0 이전에는 루트 상대 경로를 사용하는 base 뒤의 모든 상대 URL을 경고 없이 그대로 두었으므로 `<base href="/">`가 있는 페이지는 아무것도 번들링하지 않았습니다.
 
 ### Customizing which attributes are URLs
 
@@ -238,7 +324,7 @@ export default {
 
 ## Configuring the generated page
 
-아래의 모든 옵션은 [`output.html`](/configuration/output/#outputhtml) 아래에 있으며 webpack이 생성한 페이지에 적용됩니다. [entry descriptor](/configuration/entry-context/#entry-descriptor)를 통해 엔트리별로 재정의할 수 있습니다.
+아래의 모든 옵션은 [`output.html`](/configuration/output/#outputhtml) 아래에 있으며 webpack이 생성한 페이지에 적용됩니다. [entry descriptor](/configuration/entry-context/#entry-descriptor)를 통해 엔트리별로 재정의할 수 있습니다. webpack 5.113.0부터는 엔트리의 `title`, `meta`, `base`가 직접 작성한 `.html` 엔트리에도 적용됩니다(`{ import: "./src/index.html", html: { base: "/app/" } }`).
 
 **webpack.config.js**
 
@@ -918,7 +1004,7 @@ export default {
 
 ### Output options
 
-[`output.html`](/configuration/output/#outputhtml) 아래의 모든 항목은 webpack이 JavaScript 엔트리 포인트용으로 생성하는 페이지를 정의합니다. 직접 작성한 페이지는 자체 마크업을 유지하며, 이 옵션 중 `inject`, `inline`, `integrity`, `csp`만 주입되는 내용에 영향을 줍니다. `scriptLoading`은 생성된 페이지에만 적용됩니다.
+[`output.html`](/configuration/output/#outputhtml) 아래의 모든 항목은 webpack이 JavaScript 엔트리 포인트용으로 생성하는 페이지를 정의합니다. 직접 작성한 페이지는 자체 마크업을 유지하며, `title`, `meta`, `base`는 페이지에 해당 요소가 없는 경우에만 추가됩니다. `inject`, `inline`, `integrity`, `csp`는 주입되는 내용에 영향을 주며, `scriptLoading`은 생성된 페이지에만 적용됩니다.
 
 | 옵션                                                                         | 타입        | 기본값                           | 설명                                                      |                                                      |                                                 |                                                       |
 | ---------------------------------------------------------------------------- | ----------- | -------------------------------- | --------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- |

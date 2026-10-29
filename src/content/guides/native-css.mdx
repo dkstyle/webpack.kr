@@ -599,6 +599,8 @@ export default {
 
 `sass-loader`는 CSS로 컴파일하고, `postcss-loader`는 이를 후처리하며, 그 이후에는 Native CSS가 추출, `url()`, CSS Modules를 담당합니다. 같은 패턴을 `less-loader`, `stylus-loader` 등에도 적용할 수 있습니다.
 
+HTML 페이지의 인라인 `<style lang="scss">`에는 `mimetype`으로 로더를 등록하세요. [Preprocessors in inline `<style>` and `<script>`](/guides/native-html/#preprocessors-in-inline-style-and-script)를 참고하세요.
+
 ### 7. Server-side rendering (node + web)
 
 SSR에서는 보통 두 번 빌드합니다. 브라우저용 `web` bundle 하나와 서버용 `node` bundle 하나입니다. 이때 CSS Modules의 class name이 서로 일치해야 서버에서 렌더링한 마크업이 클라이언트에서 정상적으로 hydrate됩니다. `css-loader`의 `getJSON`은 이런 정보를 왕복하기 위해 자주 사용되었지만, Native CSS에서는 target 간에 `localIdentName`을 결정론적으로 맞춰 이 왕복 자체를 피할 수 있습니다.

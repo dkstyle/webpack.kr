@@ -84,6 +84,8 @@ Webpack에게 청크 ID에 사용할 알고리즘을 지정합니다. `optimizat
 | `'size'`          | 최소 초기 다운로드 크기에 초점을 맞춘 숫자 ID입니다.                                                           |
 | `'total-size'`    | 최소 전체 다운로드 크기에 초점을 맞춘 숫자 ID입니다.                                                           |
 
+W> A custom chunk id must not be an `Object.prototype` key such as `constructor`, `toString` or `__proto__`. The chunk loaders keep loaded chunks in a plain object, so such a chunk can count as already loaded and never be fetched. webpack's built-in algorithms never produce these ids.
+
 **webpack.config.js**
 
 ```js

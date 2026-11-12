@@ -1,5 +1,6 @@
 ---
 title: Experiments
+description: 기본적으로 활성화된 webpack의 내장 CSS 및 HTML 지원과 TypeScript 지원, WebAssembly, 지연 컴파일, ES 모듈 출력 등 선택적으로 활성화하는 기능을 설정합니다.
 sort: 19
 contributors:
   - EugeneHlushko
@@ -191,14 +192,14 @@ export default {
 
 ### experiments.css
 
-네이티브 CSS 지원을 활성화합니다. 아직 개발 중인 실험적인 기능이고 webpack v6에서 기본적으로 활성화될 예정이지만, [GitHub](https://github.com/webpack/webpack/issues/14893)에서 진행 상황을 확인할 수 있습니다.
+Webpack의 내장 CSS 지원은 안정화되었으며 webpack 5.109.0부터 기본적으로 활성화됩니다. 따라서 `.css` 파일에는 별도의 설정이나 loader가 필요하지 않습니다. 더 이상 사용이 권장되지 않는 `css-loader`, `style-loader`, `mini-css-extract-plugin`을 대체합니다. [Native CSS](/guides/native-css/) 가이드를 참고하세요. 이 옵션은 webpack v6에서 항상 활성화되기 전까지 `experiments` 이름을 유지합니다.
 
 - Type: `boolean | 'auto'`
 - Default: `'auto'` <Badge text="5.109.0+" />
 
 webpack 5.109.0부터 이 옵션의 기본값은 `'auto'`입니다. loader(또는 명시적인 module type)가 있는 `module.rules` 항목이 이미 `.css` 또는 `.module.css` 파일과 일치하지 않는 한 내장 CSS 지원이 활성화되므로, 기존 `css-loader`/`mini-css-extract-plugin` 설정은 변경 없이 계속 동작합니다. 네이티브 지원을 강제로 사용하려면 `true`로 설정하고, 완전히 비활성화하려면 `false`로 설정하세요. [`experiments.futureDefaults`](#experimentsfuturedefaults)는 이 값을 `true`로 해석합니다.
 
-실험적 기능:
+지원 기능:
 
 - CSS 모듈 지원: webpack은 각 CSS 클래스에 대해 고유한 이름을 생성합니다. CSS 모듈에는 `.module.css` 확장자를 사용하세요.
 
@@ -413,7 +414,7 @@ import page from "./page.html";
 document.documentElement.innerHTML = page;
 ```
 
-W> **이 기능은 실험적이며 부분적으로만 구현되었습니다.** Webpack 5.107은 JS에서 HTML 파일을 import하면 그 안의 태그 참조가 webpack 파이프라인을 거치도록 구현했습니다. 5.108부터 `.html` 파일을 엔트리로도 사용할 수 있으며, 이 실험이 활성화되면 기본 `./src` 엔트리가 `index.html`로 해석됩니다(아래 [HTML을 기본 엔트리로 사용](#html-as-the-default-entry) 참조). 플러그인 기반 설정과의 완전한 동등성은 여전히 진행 중이며, 전체 작업은 이슈 [#536](https://github.com/webpack/webpack/issues/536)에서 추적됩니다.
+T> Native HTML은 안정화되었으며 5.109.0부터 기본적으로 활성화됩니다. 이 옵션은 webpack v6까지 `experiments` 이름을 유지합니다. Webpack 5.107부터 JS에서 HTML 파일을 import하면 그 안의 태그 참조가 webpack 파이프라인을 거치며, 5.108부터는 `.html` 파일을 엔트리로도 사용할 수 있습니다. 이 기능이 활성화되면 기본 `./src` 엔트리는 `index.html`로 해석됩니다(아래 [HTML을 기본 엔트리로 사용](#html-as-the-default-entry) 참고). 네이티브 빌드에 불필요한 옵션을 그대로 옮기지 않고, 더 이상 사용이 권장되지 않는 `html-loader`와 `html-webpack-plugin`을 대체합니다. [Native HTML](/guides/native-html/) 가이드를 참고하세요.
 
 T> HTML 파서는 [`module.parser.html`](/configuration/module/#moduleparserhtml)을 통해 조정할 수 있습니다: [`sources`](/configuration/module/#moduleparserhtmlsources)를 사용하여 URL-속성 추출을 비활성화하거나 커스터마이즈하고, [`template`](/configuration/module/#moduleparserhtmltemplate)을 사용하여 파싱 전에 HTML 소스를 변환할 수 있습니다.
 

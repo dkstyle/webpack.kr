@@ -387,17 +387,17 @@ W> 아무것도 일치하지 않는 패턴은 경고를 발생시키고, 컴파�
 
 패턴은 `from`과 아래의 옵션으로 구성됩니다.
 
-| 옵션                  | 타입                                                             | 기본값                       | 설명                                                                                                             |                                                                                               |
-| --------------------- | ---------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `context`             | `string`                                                         | 아래 참조                    | `from`이 해석되는 디렉터리이며, 복사된 경로가 구조를 유지하는 기준 디렉터리입니다.                               |                                                                                               |
-| `filename`            | `string` `(pathData: PathData, assetInfo?: AssetInfo) => string` | `'[path][base]'`             | `to` 안의 복사된 파일 이름으로, [파일 이름 템플릿](#template-strings)입니다.                                     |                                                                                               |
-| `from`                | `string` `string[]`                                              | 필수                         | 복사할 glob 또는 경로입니다. glob은 `/`로 구분하고 점 파일을 일치시키며 `*`, `**`, `?`, `[]`, `{}`를 지원합니다. |                                                                                               |
-| `globOptions`         | `object`                                                         |                              | `from`의 glob 일치 방법 — [glob 옵션](#glob-options)을 참조하세요.                                               |                                                                                               |
-| `info`                | `object` `(file: CopiedFile) => object`                          |                              | 복사된 파일의 [asset info](/api/stats/#asset-objects)로, 복사가 이미 가진 정보 위에 병합됩니다.                  |                                                                                               |
-| `preservePermissions` | `boolean`                                                        | `false`                      | 복사 시 원본 파일의 권한을 유지할지 여부입니다. Windows에서는 효과가 없습니다.                                   |                                                                                               |
-| `preserveTimestamps`  | `boolean`                                                        | `false`                      | 복사 시 쓰기 시간 대신 원본 파일의 접근 및 수정 시간을 유지할지 여부입니다.                                      |                                                                                               |
-| `to`                  | `string` `(file: CopiedFile) => string`                          | [`output.path`](#outputpath) | 파일이 복사될 디렉터리로, `output.path` 상대 경로입니다.                                                         |                                                                                               |
-| `transform`           | `(content: Buffer, absoluteFilename: string) => string \| Buffer` `object`             |                                                                                                                  | 파일을 통과하는 동안 콘텐츠를 수정합니다 — [콘텐츠 변환](#transforming-content)을 참조하세요. |
+| 옵션                  | 타입                                                                       | 기본값                       | 설명                                                                                                             |
+| --------------------- | -------------------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `context`             | `string`                                                                   | 아래 참조                    | `from`이 해석되는 디렉터리이며, 복사된 경로가 구조를 유지하는 기준 디렉터리입니다.                               |
+| `filename`            | `string` `(pathData: PathData, assetInfo?: AssetInfo) => string`           | `'[path][base]'`             | `to` 안의 복사된 파일 이름으로, [파일 이름 템플릿](#template-strings)입니다.                                     |
+| `from`                | `string` `string[]`                                                        | 필수                         | 복사할 glob 또는 경로입니다. glob은 `/`로 구분하고 점 파일을 일치시키며 `*`, `**`, `?`, `[]`, `{}`를 지원합니다. |
+| `globOptions`         | `object`                                                                   |                              | `from`의 glob 일치 방법 — [glob 옵션](#glob-options)을 참조하세요.                                               |
+| `info`                | `object` `(file: CopiedFile) => object`                                    |                              | 복사된 파일의 [asset info](/api/stats/#asset-objects)로, 복사가 이미 가진 정보 위에 병합됩니다.                  |
+| `preservePermissions` | `boolean`                                                                  | `false`                      | 복사 시 원본 파일의 권한을 유지할지 여부입니다. Windows에서는 효과가 없습니다.                                   |
+| `preserveTimestamps`  | `boolean`                                                                  | `false`                      | 복사 시 쓰기 시간 대신 원본 파일의 접근 및 수정 시간을 유지할지 여부입니다.                                      |
+| `to`                  | `string` `(file: CopiedFile) => string`                                    | [`output.path`](#outputpath) | 파일이 복사될 디렉터리로, `output.path` 상대 경로입니다.                                                         |
+| `transform`           | `(content: Buffer, absoluteFilename: string) => string \| Buffer` `object` |                              | 파일을 통과하는 동안 콘텐츠를 수정합니다 — [콘텐츠 변환](#transforming-content)을 참조하세요.                    |
 
 `context`는 기본적으로 컴파일러 [`context`](/configuration/entry-context/#context)이며, `from`이 glob이 아닐 때는 `from`이 지정하는 것으로 설정됩니다. 따라서 `from: 'static'`은 `static/` 디렉터리가 아닌 `static/` 아래의 트리를 복사합니다. 명시적으로 설정하면 패턴의 모든 `from`을 하나의 디렉터리에 뿌리를 두게 하며, 여러 glob이 공유 구조를 유지하는 방법입니다.
 
@@ -1086,7 +1086,7 @@ T> 일반적으로 `output.hotUpdateMainFilename`을 변경할 필요가 없습�
 
 `boolean = false` `object`
 
-HTML이 아닌 각 [엔트리포인트](/concepts/entry-points/)에 대해 HTML 파일을 생성하고, 해당 엔트리포인트의 초기 JS 및 CSS 출력 청크([`dependOn`](/configuration/entry-context/#dependencies)을 통해 공유된 청크 포함)를 주입합니다. 이는 webpack 코어에 내장된 `html-webpack-plugin`의 일부로, 번들 주변에 문서를 스캐폴딩하는 부분입니다. 실험적 HTML 지원에 의존하므로 [`experiments.html`](/configuration/experiments/#experimentshtml)을 활성화하세요.
+HTML이 아닌 각 [엔트리포인트](/concepts/entry-points/)에 대해 HTML 파일을 생성하고, 해당 엔트리포인트의 초기 JS 및 CSS 출력 청크([`dependOn`](/configuration/entry-context/#dependencies)을 통해 공유된 청크 포함)를 주입합니다. 이전에는 별도의 플러그인이 필요했던 문서 골격 생성 기능이 webpack 코어에 내장된 것입니다. 5.109.0부터 기본적으로 활성화되는 내장 HTML 지원([`experiments.html`](/configuration/experiments/#experimentshtml))을 사용합니다.
 
 ```js
 // webpack.config.js

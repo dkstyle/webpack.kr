@@ -47,7 +47,7 @@ export default {
 };
 ```
 
-T> 일반 `.css` 파일에는 loader가 필요하지 않습니다. webpack은 CSS를 직접 파싱, 추출, 최소화하는 실험적인 내장 기능을 제공합니다. [`experiments.css`](/configuration/experiments/#experimentscss)와 [Native CSS](/guides/native-css/)를 참고하세요. preprocessor에는 계속 해당 loader가 필요하며 `type: 'css/auto'`는 loader 출력을 webpack CSS 파이프라인에 전달합니다.
+T> 일반 `.css` 파일에는 loader가 필요하지 않습니다. 기본적으로 활성화된 webpack의 내장 CSS 지원이 CSS를 직접 파싱, 추출, 최소화합니다. [`experiments.css`](/configuration/experiments/#experimentscss)와 [Native CSS](/guides/native-css/) 가이드를 참고하세요. preprocessor에는 계속 해당 loader가 필요하며, `type: 'css/auto'`는 loader 출력을 webpack CSS 파이프라인에 전달합니다.
 
 ## Using Loaders
 

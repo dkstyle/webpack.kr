@@ -677,6 +677,16 @@ class AddBuildStampPlugin {
 }
 ```
 
+## Automated migration (codemod)
+
+Most of the migration can be done for you by the [`@webpack/html-plugins-to-native-html`](https://app.codemod.com/registry/@webpack/html-plugins-to-native-html) codemod:
+
+```bash
+npx codemod @webpack/html-plugins-to-native-html
+```
+
+It requires webpack 5.112.0 or later.
+
 ## Migrating from `html-loader`
 
 `html-loader`는 가져온 `.html` 파일의 URL을 리졸브하고 문자열로 변환했습니다. Native HTML은 loader 없이 같은 작업을 수행하므로 마이그레이션은 대부분 기존 설정을 삭제하는 과정입니다.

@@ -1,13 +1,13 @@
 ---
 title: CSS and HTML Are Built In
-description: Bundle CSS and HTML with fewer dependencies and less configuration, using webpack's built-in support.
+description: webpack의 내장 지원을 사용해 더 적은 의존성과 설정으로 CSS와 HTML을 번들링하세요.
 sort: 20261116
 contributors:
   - alexander-akait
   - bjohansebas
 ---
 
-Since webpack 5.109.0, CSS and HTML work out of the box. Import a stylesheet or use an HTML page as your entry point, and webpack handles the rest. Fewer dependencies, less configuration.
+webpack 5.109.0부터는 별도의 설정 없이 CSS와 HTML을 사용할 수 있습니다. 스타일 시트를 가져오거나 HTML 페이지를 엔트리 포인트로 사용하면 나머지는 webpack이 처리합니다. 의존성과 설정을 줄일 수 있습니다.
 
 - [**CSS with no configuration**](#css-with-no-configuration)
 - [**HTML pages with no plugin**](#html-pages-with-no-plugin)
@@ -18,18 +18,18 @@ Since webpack 5.109.0, CSS and HTML work out of the box. Import a stylesheet or 
 
 ## CSS with no configuration
 
-Import a stylesheet and webpack does the rest:
+스타일 시트를 가져오면 나머지는 webpack이 처리합니다.
 
 ```js
 import "./styles.css";
 import * as button from "./button.module.css";
 ```
 
-Webpack resolves `@import` and `url()`, scopes `*.module.css` files as CSS Modules and extracts a `.css` file for each chunk. In `mode: "production"` (webpack 5.110.0 or later) it minifies the CSS, and with a [`browserslist` target](/configuration/target/) it also adds the vendor prefixes those browsers need. No `module.rules`, no plugin.
+webpack은 `@import`와 `url()`을 리졸브하고, `*.module.css` 파일을 CSS Modules로 처리해 스코프를 지정하며, 청크마다 `.css` 파일을 추출합니다. `mode: "production"`에서는 CSS를 최소화하고(webpack 5.110.0 이상), [`browserslist` 타깃](/configuration/target/)을 지정하면 해당 브라우저에 필요한 벤더 접두사도 추가합니다. `module.rules`나 플러그인은 필요하지 않습니다.
 
 ## HTML pages with no plugin
 
-Reference your styles and scripts in the page:
+페이지에서 스타일과 스크립트를 참조하세요.
 
 **src/index.html**
 
@@ -38,7 +38,7 @@ Reference your styles and scripts in the page:
 <script type="module" src="./index.js"></script>
 ```
 
-Then use that page as the entry:
+그런 다음 해당 페이지를 엔트리로 사용하세요.
 
 **webpack.config.js**
 
@@ -48,27 +48,27 @@ export default {
 };
 ```
 
-Webpack bundles the scripts, stylesheets and images the page references and rewrites their URLs to the emitted files. For a project with a JavaScript entry, `output.html: true` generates the page and links its scripts and stylesheets. The [Native HTML](/guides/native-html/) guide covers titles, favicons, Subresource Integrity, CSP and the rest.
+webpack은 페이지가 참조하는 스크립트, 스타일 시트, 이미지를 번들링하고 해당 URL이 출력된 파일을 가리키도록 변경합니다. JavaScript 엔트리를 사용하는 프로젝트에서는 `output.html: true`로 페이지를 생성하고 스크립트와 스타일 시트를 연결할 수 있습니다. 제목, 파비콘, 하위 리소스 무결성(Subresource Integrity), CSP 등에 대해서는 [Native HTML](/guides/native-html/) 가이드를 참고하세요.
 
 ## What you can remove
 
-These packages are deprecated in favor of the built-in support:
+다음 패키지는 내장 지원으로 대체되어 더 이상 사용이 권장되지 않습니다.
 
-| Package                         | Replaced by                                                                                                                                       |
+| 패키지                          | 대체 기능                                                                                                                                         |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `css-loader`                    | Built-in CSS parsing, `@import` / `url()` resolution and [CSS Modules](/guides/native-css/#css-modules)                                           |
+| `css-loader`                    | 내장 CSS 파싱, `@import` / `url()` 리졸브 및 [CSS Modules](/guides/native-css/#css-modules)                                                       |
 | `style-loader`                  | [`exportType: "style"`](/guides/native-css/#output-modes-exporttype)                                                                              |
-| `mini-css-extract-plugin`       | Built-in extraction of a `.css` file per chunk, by default                                                                                        |
-| `css-minimizer-webpack-plugin`  | Built-in [CSS minification](/guides/native-css/#minification) and [vendor prefixes](/guides/native-css/#vendor-prefixes) (5.110.0+)               |
-| `html-loader`                   | [Importing `.html` from JavaScript](/guides/native-html/#3-html-imported-from-javascript)                                                         |
-| `html-webpack-plugin`           | An [HTML entry](/guides/native-html/#1-html-as-an-entry-point) or [`output.html`](/guides/native-html/#2-a-generated-page-for-a-javascript-entry) |
-| `html-minimizer-webpack-plugin` | Built-in [HTML minification](/guides/native-html/#minification) (5.110.0+)                                                                        |
+| `mini-css-extract-plugin`       | 기본적으로 청크마다 `.css` 파일을 추출하는 내장 기능                                                                                              |
+| `css-minimizer-webpack-plugin`  | 내장 [CSS 최소화](/guides/native-css/#minification) 및 [벤더 접두사](/guides/native-css/#vendor-prefixes) (5.110.0+)                              |
+| `html-loader`                   | [JavaScript에서 `.html` 가져오기](/guides/native-html/#3-html-imported-from-javascript)                                                           |
+| `html-webpack-plugin`           | [HTML 엔트리](/guides/native-html/#1-html-as-an-entry-point) 또는 [`output.html`](/guides/native-html/#2-a-generated-page-for-a-javascript-entry) |
+| `html-minimizer-webpack-plugin` | 내장 [HTML 최소화](/guides/native-html/#minification) (5.110.0+)                                                                                  |
 
-Preprocessors and template engines such as `sass-loader`, `less-loader`, `postcss-loader` and Pug keep working with the built-in support.
+`sass-loader`, `less-loader`, `postcss-loader`, Pug 같은 전처리기와 템플릿 엔진은 내장 지원과 함께 계속 사용할 수 있습니다.
 
 ## Sass, Less, PostCSS and Tailwind
 
-Keep the preprocessor's loader and drop the CSS loaders behind it. The rule's `type` hands its output to webpack's CSS pipeline:
+전처리기의 로더는 유지하고 그 뒤에서 실행되는 CSS 로더를 제거하세요. 규칙의 `type`이 전처리기의 출력을 webpack의 CSS 파이프라인으로 전달합니다.
 
 ```diff
  {
@@ -79,24 +79,24 @@ Keep the preprocessor's loader and drop the CSS loaders behind it. The rule's `t
  }
 ```
 
-One rule covers both `layout.scss` (global) and `button.module.scss` (a CSS Module). For PostCSS and Tailwind on `.css` files, and the few cases where `experiments.css: true` is needed, see [Preprocessors, PostCSS and Tailwind](/guides/native-css/#preprocessors-postcss-and-tailwind).
+하나의 규칙으로 `layout.scss`(전역)와 `button.module.scss`(CSS Module)를 모두 처리합니다. `.css` 파일에 PostCSS와 Tailwind를 적용하는 방법과 `experiments.css: true`가 필요한 몇 가지 경우는 [Preprocessors, PostCSS and Tailwind](/guides/native-css/#preprocessors-postcss-and-tailwind)를 참고하세요.
 
 ## Existing projects keep working
 
-Existing `css-loader` and `html-loader` setups keep working. By default, webpack detects their rules and keeps the corresponding built-in support off, so you can migrate when you're ready.
+기존 `css-loader`와 `html-loader` 설정은 계속 작동합니다. 기본적으로 webpack이 해당 규칙을 감지해 대응하는 내장 지원을 비활성화하므로 준비가 되었을 때 마이그레이션할 수 있습니다.
 
 ## Migrate an existing project
 
-For CSS, run the [`@webpack/css-plugins-to-native-css`](https://app.codemod.com/registry/@webpack/css-plugins-to-native-css) codemod:
+CSS는 [`@webpack/css-plugins-to-native-css`](https://app.codemod.com/registry/@webpack/css-plugins-to-native-css) codemod를 실행하세요.
 
 ```bash
 npx codemod @webpack/css-plugins-to-native-css
 ```
 
-For HTML, run the [`@webpack/html-plugins-to-native-html`](https://app.codemod.com/registry/@webpack/html-plugins-to-native-html) codemod (webpack 5.112.0 or later):
+HTML은 [`@webpack/html-plugins-to-native-html`](https://app.codemod.com/registry/@webpack/html-plugins-to-native-html) codemod를 실행하세요(webpack 5.112.0 이상).
 
 ```bash
 npx codemod @webpack/html-plugins-to-native-html
 ```
 
-For manual migration, follow the [Native CSS](/guides/native-css/#migration-guide) and [Native HTML](/guides/native-html/#migrating-from-html-webpack-plugin) guides. New projects scaffolded with `npx create-webpack-app` already use the built-in support.
+직접 마이그레이션하려면 [Native CSS](/guides/native-css/#migration-guide)와 [Native HTML](/guides/native-html/#migrating-from-html-webpack-plugin) 가이드를 따르세요. `npx create-webpack-app`으로 생성한 새 프로젝트는 이미 내장 지원을 사용합니다.
